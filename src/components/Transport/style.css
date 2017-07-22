@@ -1,0 +1,108 @@
+.transport-container {
+	display: flex;
+	flex-direction: column;
+	margin: -11px -6px;
+	padding: 10px 16px;
+}
+
+
+/* Header */
+.transport-header {
+	display: flex;
+}
+
+.transport-icon {
+	flex-shrink: 1;
+	min-width: 30px;
+	max-width: 50px;
+	max-height: 30px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: top;
+}
+
+.transport-name {
+	flex-grow: 1;
+	margin-left: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: bold;
+}
+
+.transport-distance {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	margin-left: 7px;
+}
+
+
+/* Passages */
+.transport-passages-container {
+	min-height: 18px;
+	padding-top: 8px;
+	padding-left: 15px;
+	display: flex;
+	flex-direction: row;
+}
+
+.transport-passages-direction {
+	flex-grow: 1;
+	padding-right: 10px;
+	flex-shrink: 0.5;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+
+/* Times */
+.transport-passages-times-container {
+	display: flex;
+	flex-shrink: 1;
+	overflow: hidden;
+	max-width: 35%;
+}
+
+.transport-passages-time {
+	max-width: 100%;
+	margin-left: 10px;
+	flex-shrink: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: bold;
+}
+
+.transport-passages-time::before {
+	margin-right: 10px;
+	content: '-';
+	color: #9E9E9E;
+}
+
+.transport-passages-time:first-child {
+	flex-shrink: 0;
+	margin-left: 0;
+}
+
+.transport-passages-time:first-child::before {
+	display: none;
+}
+
+
+/* Open */
+.transport-container-open .transport-name {
+	white-space: normal;
+}
+
+.transport-container-open .transport-passages-container {
+	flex-direction: column;
+	padding-top: 15px;
+}
+
+.transport-container-open .transport-passages-times-container {
+	max-width: 100%;
+	padding-top: 10px;
+	overflow: auto;
+}

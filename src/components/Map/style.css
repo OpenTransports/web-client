@@ -1,0 +1,14 @@
+.map-transport-marker-icon {
+	height: auto !important;
+}
+
+.map-user-position-marker-icon {
+	background: blue;
+	border-radius: 100%;
+	border: 2px solid white;
+	box-shadow: 0 0 5px 3px #888888;
+}
+
+.map-transport-marker-popup {
+	min-height: 50px;
+}
