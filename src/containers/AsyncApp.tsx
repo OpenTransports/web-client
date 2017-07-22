@@ -2,99 +2,92 @@ import * as React from 'react'
 import { connect, Dispatch } from 'react-redux'
 import { ThunkAction } from 'redux-thunk';
 
-import IconButton from 'material-ui/IconButton'
-import NavigationRefreshIcon from 'material-ui/svg-icons/navigation/refresh'
-import MapIcon from 'material-ui/svg-icons/maps/map'
-import { blueA700 } from 'material-ui/styles/colors'
-import LinearProgress from 'material-ui/LinearProgress'
-
-import AppBar from 'material-ui/AppBar';
-import NavPanel from './NavPanel'
-import MapPanel from './MapPanel'
-import Content from './Content'
+import { Header, NavDrawer, MapDrawer, TransportsList } from '../components'
 
 import { Position } from '../models'
-import { OTState } from '../reducers/opentransports'
+import { RootState } from '../reducers/configureStore'
 import {
-	fetchTransports,
-	fetchAgencies,
-	toggleMenu,
-	toggleMap,
+	fetchTransports, fetchAgencies,
+	toggleMenu, toggleMap,
 	watchPosition,
+	changeRadius,
+	toggleAgency
 } from '../actions'
 
 
-export interface AsyncAppProps {
-	isFetching: boolean,
-	dispatch: Dispatch<any>,
-	position: Position
+function mapStateToProps(state: RootState): RootState {
+	return state
 }
 
 
-function mapStateToProps(state: OTState): AsyncAppProps {
-	return {
-		dispatch   : state.dispatch,
-		isFetching : state.transports.isFetching || state.agencies.isFetching,
-		position   : state.position,
-	}
-}
+class AsyncApp extends React.Component<RootState, any> {
 
-
-class AsyncApp extends React.Component<AsyncAppProps, any> {
-
-	constructor(props: AsyncAppProps) {
+	constructor(props: RootState) {
 		super(props)
-		this.refreshTransports = this.refreshTransports.bind(this)
-		this.toggleMenu        = this.toggleMenu.bind(this)
-		this.toggleMap         = this.toggleMap.bind(this)
 	}
 
 	componentDidMount() {
 		this.props.dispatch(watchPosition())
 	}
 
-	refreshTransports() {
-		this.props.dispatch(fetchAgencies(this.props.position))
-		this.props.dispatch(fetchTransports(this.props.position))
-	}
-
-	toggleMenu() {
-		this.props.dispatch(toggleMenu())
-	}
-
-	toggleMap() {
-		this.props.dispatch(toggleMap())
-	}
-
 	render()  {
+		const { dispatch, agencies, transports, userPosition, radius, drawers } = this.props
+
+		// Filter 1: Don't display Transports from non activated agencies
+		// Filter 2: Don't display Transports without an incomming passage
+		// Filter 3: Don't display Transports that are to fare
+		const visibleTransports = Object.keys(transports.items)
+			.map(transportID => transports.items[transportID])
+			.filter(transport => agencies.activated.indexOf[transport.agencyID] != -1)
+			.filter(transport => transport.passages.length > 0)
+			.filter(transport => transport.position.distanceFrom(userPosition) <= radius)
+
 		return (
 			<div style={{
 				display: 'flex',
 				flexDirection: 'column',
 				height: '100%',
 			}}>
-				<AppBar
-					style={{flexShrink: 0, backgroundColor: blueA700}}
-					title="OpenTransport"
-					iconElementRight={
-						<div >
-							<IconButton
-								iconStyle={{color: 'white'}}
-								onTouchTap={this.refreshTransports}>
-								<NavigationRefreshIcon/>
-							</IconButton>
-							<IconButton
-								iconStyle={{color: 'white'}}
-								onTouchTap={this.toggleMap}>
-								<MapIcon/>
-							</IconButton>
-						</div>}
-					onLeftIconButtonTouchTap={this.toggleMenu}
+
+				<Header
+					isFetching = {agencies.isFetching || transports.isFetching}
+					toggleMenu = {() => this.props.dispatch(toggleMenu())}
+					toggleMap  = {() => this.props.dispatch(toggleMap())}
+					refresh    = {() => {
+						this.props.dispatch(fetchAgencies())
+						this.props.dispatch(fetchTransports())
+					}}
 				/>
-				{this.props.isFetching && <LinearProgress style={{flexShrink: 0}}/>}
-				<NavPanel/>
-				<MapPanel/>
-				<Content/>
+
+				<NavDrawer
+					agencies       = {
+						Object.keys(agencies.items).map(agencyID => {
+							return {
+								ID: agencyID,
+								name: agencies.items[agencyID].name,
+								activated: agencies.activated.indexOf(agencyID) != -1,
+							}
+						})}
+					radius         = {radius}
+					lock           = {drawers.mapIsOpen}
+					isOpen         = {drawers.menuIsOpen}
+					toggleOpen     = {() => dispatch(toggleMenu())}
+					onRadiusChange = {radius => dispatch(changeRadius(radius))}
+					onAgencyToggle = {agencyID => dispatch(toggleAgency(agencyID))}
+				/>
+
+				<MapDrawer
+					transports        = {visibleTransports}
+					selectedTransport = {transports.selected}
+					userPosition      = {userPosition}
+					mapIsOpen         = {drawers.mapIsOpen}
+					toggleOpen        = {() => dispatch(toggleMap())}
+				/>
+
+				<TransportsList
+					transports={visibleTransports}
+					userPosition={userPosition}
+				/>
 			</div>
 		)
 	}

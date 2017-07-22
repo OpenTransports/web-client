@@ -16,7 +16,7 @@ type GroupMarkerProp = {
 export default function GroupMarker(props: GroupMarkerProp) {
 	const { userPosition, group } = props
 	const position = group[0].position
-	const iconURL  = `media/${group[0].agencyID}/${group[0].image}`
+	const iconURL  = `${group[0].serverURL}/medias/${group[0].agencyID}/${group[0].image}`
 	return (
 		<Marker
 			position={{lat: position.latitude, lng: position.longitude}}

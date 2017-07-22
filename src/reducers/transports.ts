@@ -1,31 +1,34 @@
+import { Normalized, normalizeArray } from './normalize'
+
 import { Position, Transport } from '../models'
 
 import {
-	REQUEST_TRANSPORTS, RECEIVE_TRANSPORTS, SELECT_TRANSPORT, UNSELECT_TRANSPORT,
-	transportAction
+	REQUEST_TRANSPORTS, RECEIVE_TRANSPORTS,
+	SELECT_TRANSPORT, UNSELECT_TRANSPORT,
+	transportActions
 } from '../actions'
 
 
-// TRANSPORTS STATE INTERFACE
-export interface TransportsState {
-	isFetching       : boolean,
-	items            : Array<Transport>,
-	lastUpdated      : { date: number, position: Position },
-	selectedTransport: Transport | null
+// STATE TYPE
+export type TransportsState = {
+	items      : Normalized<Transport>
+	selected   : Transport | null
+	isFetching : boolean
+	lastUpdated: { date: number, position: Position }
 }
 
 
 // DEFAULT STATE
 const defaultState: TransportsState = {
-	isFetching       : false,
-	items            : [] as Array<Transport>,
-	lastUpdated      : { date: 0, position: new Position() },
-	selectedTransport: null,
+	items      : {},
+	selected   : null,
+	isFetching : false,
+	lastUpdated: { date: 0, position: new Position() },
 }
 
 
-// REDUCER
-export function transports(state = defaultState, action: transportAction): TransportsState {
+// REDUCERS
+export function transports(state = defaultState, action: transportActions): TransportsState {
 	switch (action.type) {
 	case REQUEST_TRANSPORTS:
 		return {
@@ -35,21 +38,24 @@ export function transports(state = defaultState, action: transportAction): Trans
 	case RECEIVE_TRANSPORTS:
 		return {
 			...state,
-			items: action.transports,
+			items: {
+				...state.items,
+				...normalizeArray(action.transports)
+			},
 			isFetching: false,
-			lastUpdated: { date: action.receivedAt, position: action.receivedPos },
+			lastUpdated: { date: action.date, position: action.position },
 		}
 	case SELECT_TRANSPORT:
 		return {
 			...state,
-			selectedTransport: action.transport
+			selected: action.transport
 		}
 	case UNSELECT_TRANSPORT:
 		return {
 			...state,
-			selectedTransport: null
+			selected: null
 		}
-		default:
-		return {...state}
+	default:
+		return state
 	}
 }

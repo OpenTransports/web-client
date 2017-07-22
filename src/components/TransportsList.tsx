@@ -1,39 +1,37 @@
-import * as React from 'react';
+import * as React from 'react'
 
 import { List, ListItem } from 'material-ui/List'
 import Paper from 'material-ui/Paper'
-import { grey100, white } from 'material-ui/styles/colors'
+import { grey100 } from 'material-ui/styles/colors'
 
-import { Transport, Position } from '../models'
+import { Position, Transport } from '../models'
 import TransportComp from './Transport'
 
 
 interface TransportsListProps {
-	transports: Array<Transport>
+	transports  : Array<Transport>
 	userPosition: Position
 }
 
+export function TransportsList(props: TransportsListProps) {
+	const { transports, userPosition } = props
 
-export default class TransportsList extends React.Component<TransportsListProps, undefined> {
-	render() {
-		const { transports, userPosition } = this.props
-		return (
-			<List style={{
-				backgroundColor: grey100,
-				overflow: 'scroll',
-				flexGrow: 1,
-			}}>
-				{transports.map(t =>
-					<ListItem key={t.ID} innerDivStyle={{padding: '16px 10px'}}>
-						<Paper style={{backgroundColor: white}}>
-							<TransportComp
-								transport={t}
-								userPosition={userPosition}
-							/>
-						</Paper>
-					</ListItem>
-				)}
-			</List>
-		)
-	}
+	return (
+		<List style={{
+			backgroundColor: grey100,
+			overflow: 'scroll',
+			flexGrow: 1,
+		}}>
+			{transports.map(t =>
+				<ListItem key={t.ID} innerDivStyle={{padding: '16px 10px'}}>
+					<Paper style={{backgroundColor: 'white'}}>
+						<TransportComp
+							transport={t}
+							userPosition={userPosition}
+						/>
+					</Paper>
+				</ListItem>
+			)}
+		</List>
+	)
 }

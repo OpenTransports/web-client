@@ -16,20 +16,20 @@ const defaultState: DrawersState = {
 	mapIsOpen  : false,
 }
 
-// REDUCER
+// REDUCERS
 export function drawers(state = defaultState, action: DrawersAction): DrawersState {
 	switch (action.type) {
-		case TOGGLE_MENU:
-			return {
-				...state,
-				menuIsOpen: !state.menuIsOpen,
-			}
-		case TOGGLE_MAP:
-			return {
-				...state,
-				mapIsOpen: !state.mapIsOpen,
-			}
-		default:
-			return state
-	}
+	case TOGGLE_MENU:
+		return {
+			...state,
+			menuIsOpen: !state.menuIsOpen,
+		}
+	case TOGGLE_MAP:
+		return {
+			...state,
+			mapIsOpen: !state.mapIsOpen,
+		}
+	default:
+		return state
+}
 }

@@ -1,5 +1,3 @@
-import '../env'
-
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
@@ -12,9 +10,10 @@ import * as injectTapEventPlugin from 'react-tap-event-plugin';
 // TODO - stay alert and remove when this become unecessary
 injectTapEventPlugin();
 
+import '../env'
 import "./main.css"
 
-import configureStore from '../configureStore'
+import configureStore from '../reducers/configureStore'
 import AsyncApp from './AsyncApp'
 
 const store = configureStore()

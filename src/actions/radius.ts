@@ -1,33 +1,43 @@
 import { Dispatch } from 'react-redux'
 
-import  { OTState } from '../reducers/opentransports'
-import { fetchTransports } from './transports'
-import { fetchAgencies } from './agencies'
+import { RootState } from '../reducers/configureStore'
+import { fetchTransports, fetchAgencies } from './'
+import { Position } from '../models'
 
-export const UPDATE_RADIUS = 'UPDATE_RADIUS'
 
 // TYPES
-export type RadiusAction = {
-	type: 'UPDATE_RADIUS',
-	radius: number,
+export const UPDATE_RADIUS = 'UPDATE_RADIUS'
+
+export type radiusActions = {
+	type    : 'UPDATE_RADIUS'
+	radius  : number
+	position: Position
 }
 
+
 // CREATORS
-function updateRadius(radius: number): RadiusAction {
+function updateRadius(radius: number, position: Position): radiusActions {
 	return {
 		type: UPDATE_RADIUS,
-		radius: radius,
+		radius,
+		position,
 	}
 }
 
-// FUNCTION
+
+// FUNCTIONS
+// 1. Dispatch a updateRadius action
+// 2. If the new radius is bigger than the old radius, refetch transports and agencies list
+// @param newRadius <number> the new radius
 export function changeRadius(newRadius: number) {
-	return (dispatch: Dispatch<{}>, getState: () => OTState) => {
-		const { radius , position } = getState()
-		dispatch(updateRadius(newRadius))
+	return (dispatch: Dispatch<{}>, getState: () => RootState) => {
+		const { radius , userPosition } = getState()
+
+		dispatch(updateRadius(newRadius, userPosition))
+
 		if (newRadius > radius) {
-			dispatch(fetchTransports(position))
-			dispatch(fetchAgencies(position))
+			dispatch(fetchTransports())
+			dispatch(fetchAgencies())
 		}
 	}
 }

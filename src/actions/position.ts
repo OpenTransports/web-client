@@ -3,51 +3,58 @@ import { Dispatch } from 'react-redux'
 import { Position } from '../models'
 import { fetchTransports } from './transports'
 import { fetchAgencies } from './agencies'
-import { OTState } from '../reducers/opentransports'
-
-// ACTION TYPES
-export type UPDATE_POSITION = 'UPDATE_POSITION'
-export const UPDATE_POSITION: UPDATE_POSITION = "UPDATE_POSITION"
-
-export type PositionOtherAction = { type: '' }
-export const PositionOtherAction : PositionOtherAction = { type: '' }
+import { RootState } from '../reducers/configureStore'
 
 
-// INTERFACES
+// TYPES
+export const UPDATE_POSITION = "UPDATE_POSITION"
+
 export type UpdatePositionAction = {
-	type: UPDATE_POSITION,
+	type    : 'UPDATE_POSITION'
 	position: Position
+	radius  : number
 }
 
-export type PositionAction =
-	UpdatePositionAction |
-	PositionOtherAction
+export type positionActions = UpdatePositionAction
 
 
-// ACTIONS OBJECTS BUILDERS
-function updatePosition(p: Position): PositionAction {
+// CREATORS
+function updatePosition(position: Position, radius: number): positionActions {
 	return {
 		type: UPDATE_POSITION,
-		position: p,
+		position,
+		radius,
 	}
 }
 
-// ACTIONS FUNCTION
+
+// FUNCTIONS
+// Begin the watch the user's position
+// When the position change:
+// 	1. Dispatch an updatePosition action with the new position
+// 	2. Refresh agencies list if:
+// 		- The old and new position are more than 5 Km apart
+// 	3. Refresh transports list if:
+// 		- The old and new position are more than 50 m apart
+// 		- The last update was more than 2 minutes ago
 export function watchPosition() {
-	return (dispatch: Dispatch<{}>, getState: () => OTState ) => {
+	return (dispatch: Dispatch<{}>, getState: () => RootState ) => {
 		navigator.geolocation.watchPosition(location => {
-			const oldState = getState()
+			const prevState = getState()
+
 			// Mock user position during dev
 			// Can be change by creating an .env file (see .env.example)
 			const newPosition = new Position(MOCK_POSITION || location.coords)
-			dispatch(updatePosition(newPosition))
-			if (newPosition.distanceFrom(oldState.agencies.lastUpdated.position) > 50 ||
-				oldState.agencies.lastUpdated.date - Date.now() > 2*60*1000) {
-				dispatch(fetchTransports(newPosition))
+
+			dispatch(updatePosition(newPosition, prevState.radius))
+
+			if (newPosition.distanceFrom(prevState.agencies.lastUpdated.position) > 5000) {
+				dispatch(fetchAgencies())
 			}
-			if (newPosition.distanceFrom(oldState.transports.lastUpdated.position) > 50 ||
-				oldState.transports.lastUpdated.date - Date.now() > 2*60*1000) {
-				dispatch(fetchAgencies(newPosition))
+
+			if (newPosition.distanceFrom(prevState.transports.lastUpdated.position) > 50 ||
+				prevState.transports.lastUpdated.date - Date.now() > 2*60*1000) {
+				dispatch(fetchTransports())
 			}
 		})
 	}

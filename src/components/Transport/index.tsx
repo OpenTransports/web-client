@@ -8,7 +8,7 @@ import { capitalize } from '../../filters'
 import './style.css'
 
 interface TransportsProps {
-	transport: Transport
+	transport   : Transport
 	userPosition: Position
 }
 
@@ -29,7 +29,7 @@ export default class Transports extends React.Component<TransportsProps, any> {
 	render() {
 		const { transport, userPosition } = this.props
 		const containerClasses = `transport-container ${this.state.isOpen ? 'transport-container-open':''}`
-		const iconURL = `media/${transport.agencyID}/${transport.image}`
+		const iconURL = `${transport.serverURL}/medias/${transport.agencyID}/${transport.image}`
 		return (
 			<div
 				className={containerClasses}

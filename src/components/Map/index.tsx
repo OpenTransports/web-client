@@ -11,7 +11,7 @@ import UserPositionMarker from './UserPositionMarker'
 import './style.css'
 
 
-interface MapPanelProps {
+interface TransportsMapProps {
 	groups            : Array<Array<Transport>>,
 	position          : Position,
 	selectedTransport : Transport,
@@ -22,7 +22,7 @@ type Viewport = {
   zoom: number,
 }
 
-export default class MapPanel extends React.Component<MapPanelProps, {viewport: Viewport}> {
+export default class TransportsPanel extends React.Component<TransportsMapProps, {viewport: Viewport}> {
 
 	constructor(props) {
 		super(props)

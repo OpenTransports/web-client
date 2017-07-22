@@ -1,10 +1,10 @@
 import {
 	UPDATE_RADIUS,
-	RadiusAction
+	radiusActions
 } from '../actions'
 
 
-// RADIUS STATE TYPE
+// STATE TYPE
 export type RadiusState = number
 
 
@@ -13,11 +13,11 @@ const defaultState: RadiusState = 200
 
 
 // REDUCERS
-export function radius(state = defaultState, action: RadiusAction): RadiusState {
+export function radius(state = defaultState, action: radiusActions): RadiusState {
 	switch (action.type) {
-		case UPDATE_RADIUS:
-			return action.radius
-		default:
-			return state
+	case UPDATE_RADIUS:
+		return action.radius
+	default:
+		return state
 	}
 }

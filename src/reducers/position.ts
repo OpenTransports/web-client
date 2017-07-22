@@ -1,9 +1,9 @@
 import { Position } from '../models'
 
-import { UPDATE_POSITION, PositionAction } from '../actions'
+import { UPDATE_POSITION, positionActions } from '../actions'
 
 
-// TRANSPORTS STATE INTERFACE
+// STATE TYPE
 export type PositionState = Position
 
 
@@ -11,12 +11,12 @@ export type PositionState = Position
 const defaultState: PositionState = new Position()
 
 
-// REDUCER
-export function position(state = defaultState, action: PositionAction): PositionState {
+// REDUCERS
+export function userPosition(state = defaultState, action: positionActions): PositionState {
 	switch (action.type) {
-		case UPDATE_POSITION:
-			return action.position
-		default:
-			return state
+	case UPDATE_POSITION:
+		return action.position
+	default:
+		return state
 	}
 }

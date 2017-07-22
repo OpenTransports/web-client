@@ -1,6 +1,6 @@
 export class Position {
-	latitude  : number
-	longitude : number
+	latitude : number
+	longitude: number
 
 	// Default position is { 0, 0 }
 	constructor(rawPosition?: any) {
@@ -35,10 +35,10 @@ export class Position {
 
 
 export class Agency {
-	ID     : string
-	name   : string
-	center : Position
-	radius : number
+	ID    : string
+	name  : string
+	center: Position
+	radius: number
 
 	constructor(rawAgency: any) {
 		this.ID     = rawAgency.ID
@@ -56,6 +56,7 @@ type Passage = {
 export class Transport {
 	ID        : string
 	agencyID  : string
+	serverURL : string
 	name      : string
 	position  : Position
 	image     : string
@@ -63,18 +64,30 @@ export class Transport {
 	passages? : Array<Passage>
 	count?    : number
 
-	constructor(rawTransport: any) {
-		this.map(rawTransport)
+	constructor(rawTransport: any, serverURL: string) {
+		this.name      = rawTransport.name
+		this.ID        = rawTransport.ID
+		this.agencyID  = rawTransport.agencyID
+		this.serverURL = serverURL
+		this.position  = new Position(rawTransport.position)
+		this.image     = rawTransport.image
+		this.group     = rawTransport.group
+		this.passages  = rawTransport.passages || []
+		this.count     = rawTransport.count
 	}
+}
 
-	map(rawTransport: any): void {
-		this.name     = rawTransport.name
-		this.ID       = rawTransport.ID
-		this.agencyID = rawTransport.agencyID
-		this.position = new Position(rawTransport.position)
-		this.image    = rawTransport.image
-		this.group    = rawTransport.group
-		this.passages = rawTransport.passages || []
-		this.count    = rawTransport.count
+
+export class Server {
+	ID    : string
+	URL   : string
+	center: Position
+	radius: number
+
+	constructor(rawServer) {
+		this.ID     = rawServer.ID
+		this.URL    = rawServer.URL
+		this.center = new Position(rawServer.center)
+		this.radius = rawServer.radius
 	}
 }

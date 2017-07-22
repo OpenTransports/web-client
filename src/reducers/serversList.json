@@ -1,0 +1,11 @@
+[
+	{
+		"ID": "France.Paris",
+		"URL": "https://open-transports-paris.herokuapp.com",
+		"radius": 20000,
+		"center": {
+			"latitude":  48.856,
+			"longitude": 2.35
+		}
+	}
+]

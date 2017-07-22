@@ -48,9 +48,18 @@ config = {
 		historyApiFallback: true,
 		noInfo: true,
 		https : true,
+		allowedHosts: [
+			'host.com',
+			'subdomain.host.com',
+			'subdomain2.host.com',
+			'host2.com',
+			'open-transports-paris.herokuapp.com'
+		],
+		headers: { "Access-Control-Allow-Origin": "https://open-transports-paris.herokuapp.com" },
 		proxy : {
-		  '/api'  : 'http://localhost:8080',
-		  '/media': 'http://localhost:8080',
+		  '/transports': 'http://localhost:8080',
+		  '/agencies'  : 'http://localhost:8080',
+		  '/medias'    : 'http://localhost:8080',
 		},
 	},
 }
