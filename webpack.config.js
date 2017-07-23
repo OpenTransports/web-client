@@ -5,6 +5,7 @@ const dotenv  = require('dotenv')
 const CompressionPlugin  = require('compression-webpack-plugin')
 const HtmlWebpackPlugin  = require('html-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
+const UglifyJsPlugin     = require('uglifyjs-webpack-plugin')
 
 // Default dev config
 config = {
@@ -86,8 +87,8 @@ if (process.env.production) {
 				NODE_ENV: JSON.stringify('production')
 			}
 		}),
-		new webpack.optimize.UglifyJsPlugin(),
 		new webpack.optimize.AggressiveMergingPlugin(),
+		new UglifyJsPlugin()
 		new CompressionPlugin({
 			asset    : "[path].gz[query]",
 			algorithm: "gzip",
