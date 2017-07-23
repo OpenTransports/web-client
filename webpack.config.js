@@ -88,7 +88,7 @@ if (process.env.production) {
 			}
 		}),
 		new webpack.optimize.AggressiveMergingPlugin(),
-		new UglifyJsPlugin()
+		new UglifyJsPlugin(),
 		new CompressionPlugin({
 			asset    : "[path].gz[query]",
 			algorithm: "gzip",
