@@ -22,7 +22,9 @@ export function TransportsList(props: TransportsListProps) {
 			overflow: 'scroll',
 			flexGrow: 1,
 		}}>
-			{transports.map(t =>
+			{transports
+				.sort((t1, t2) => t1.position.distanceFrom(userPosition) - t2.position.distanceFrom(userPosition))
+				.map(t =>
 				<ListItem key={t.ID} innerDivStyle={{padding: '16px 10px'}}>
 					<Paper style={{backgroundColor: 'white'}}>
 						<TransportComp
