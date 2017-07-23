@@ -16,8 +16,8 @@ export interface NavDrawerProps {
 	lock          : boolean
 	isOpen        : boolean
 	toggleOpen    : () => void
-	onRadiusChange: (number) => void
-	onAgencyToggle: (string) => void
+	onRadiusChange: (newRadius: number) => void
+	onAgencyToggle: (agencyID: string) => void
 }
 
 
@@ -25,10 +25,6 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 	constructor(props: NavDrawerProps) {
 		super(props)
 		this.state = { radius: this.props.radius }
-	}
-
-	handleRadiusChange(event: any, value: number) {
-		this.setState({ radius: value })
 	}
 
 	render() {
@@ -50,7 +46,7 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 							<Toggle
 								label={agency.name}
 								defaultToggled={agency.activated}
-								onToggle={onAgencyToggle}
+								onToggle={() => onAgencyToggle(agency.ID)}
 							>
 							</Toggle>
 						</ListItem>
@@ -63,8 +59,8 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 						max={1000}
 						step={10}
 						value={radius}
-						onChange={this.handleRadiusChange}
-						onDragStop={onRadiusChange}
+						onChange={(event, newRadius: number) => this.setState({ radius: newRadius })}
+						onDragStop={() => onRadiusChange(this.state.radius)}
 					/>
 				</div>
 			</Drawer>

@@ -72,7 +72,7 @@ class AsyncApp extends React.Component<RootState, any> {
 					lock           = {drawers.mapIsOpen}
 					isOpen         = {drawers.menuIsOpen}
 					toggleOpen     = {() => dispatch(toggleMenu())}
-					onRadiusChange = {radius => dispatch(changeRadius(radius))}
+					onRadiusChange = {(radius) => dispatch(changeRadius(radius))}
 					onAgencyToggle = {agencyID => dispatch(toggleAgency(agencyID))}
 				/>
 
