@@ -35,16 +35,28 @@ export class Position {
 
 
 export class Agency {
-	ID    : string
-	name  : string
-	center: Position
-	radius: number
+	ID         : string
+	serverID   : string
+	URL        : string
+	git        : string
+	name       : string
+	center     : Position
+	radius     : number
+	types      : TransportType[]
+	typesString: string[]
+	iconsURL   : { [name: number]: string }
 
-	constructor(rawAgency: any) {
-		this.ID     = rawAgency.ID
-		this.name   = rawAgency.name
-		this.center = new Position(rawAgency.center)
-		this.radius = rawAgency.radius
+	constructor(rawAgency: any, serverID: string) {
+		this.ID          = rawAgency.ID
+		this.serverID    = rawAgency.serverID
+		this.URL         = rawAgency.URL
+		this.git         = rawAgency.git
+		this.name        = rawAgency.name
+		this.center      = new Position(rawAgency.center)
+		this.radius      = rawAgency.radius
+		this.types       = rawAgency.types
+		this.typesString = rawAgency.typesString
+		this.iconsURL    = rawAgency.iconsURL
 	}
 }
 
@@ -53,26 +65,39 @@ type Passage = {
 	times: Array<string>
 }
 
-export class Transport {
-	ID        : string
-	agencyID  : string
-	serverURL : string
-	name      : string
-	position  : Position
-	image     : string
-	group     : string
-	passages? : Array<Passage>
-	count?    : number
+enum TransportType {
+	Tram = 0,
+	Metro,
+	Rail,
+	Bus,
+	Ferry,
+	Bike,
+	Unknown,
+}
 
-	constructor(rawTransport: any, serverURL: string) {
-		this.name      = rawTransport.name
+export class Transport {
+	ID       : string
+	agencyID : string
+	name     : string
+	type     : TransportType
+	position : Position
+	iconURL  : string
+	line     : string
+	passages?: Array<Passage>
+	count?   : number
+
+	constructor(rawTransport: any) {
+		if (rawTransport.passages == null) {
+			console.log(rawTransport)
+		}
 		this.ID        = rawTransport.ID
 		this.agencyID  = rawTransport.agencyID
-		this.serverURL = serverURL
+		this.name      = rawTransport.name
+		this.type      = rawTransport.type
 		this.position  = new Position(rawTransport.position)
-		this.image     = rawTransport.image
-		this.group     = rawTransport.group
-		this.passages  = rawTransport.passages || []
+		this.iconURL   = rawTransport.iconURL
+		this.line      = rawTransport.line
+		this.passages  = rawTransport.passages
 		this.count     = rawTransport.count
 	}
 }
@@ -89,5 +114,44 @@ export class Server {
 		this.URL    = rawServer.URL
 		this.center = new Position(rawServer.center)
 		this.radius = rawServer.radius
+	}
+}
+
+
+export class TransportsCluster {
+	agency    : Agency
+	transports: Transport[]
+	position  : Position
+	type      : TransportType
+
+	constructor(agency: Agency, transports?: Transport[]) {
+		this.agency = agency
+		this.transports = []
+
+		if (transports != undefined) {
+			this.addTransport(transports)
+		}
+	}
+
+	addTransport(transports: Transport[]) {
+		if (transports.length == 0) return
+
+		this.transports = this.transports.concat(transports)
+
+		if (this.position == undefined) {
+			this.position = transports[0].position
+		}
+		if (this.type == undefined) {
+			this.type = transports[0].type
+		}
+
+		for (let transport of transports) {
+			if (!transport.position.isEqual(this.position)) {
+				throw "Transport and cluster position are different"
+			}
+			if (transport.type != this.type) {
+				throw "Transport and cluster type are different"
+			}
+		}
 	}
 }

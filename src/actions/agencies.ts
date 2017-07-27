@@ -75,19 +75,16 @@ export function fetchAgencies() {
 		let nearServers = Object.keys(servers.items)
 			.map(serverID => servers.items[serverID])
 			.filter(server => server.center.distanceFrom(userPosition) <= server.radius)
-			.map(server => server.URL)
-		for (let serverURL of nearServers) {
+			.map(server => server)
+		for (let server of nearServers) {
 			promises.push(
-				fetch(`${serverURL}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
-					.then(response => {
-						console.log(response)
-						return response.json()
-					})
-					.then(json => json.map((rawAgency: any) => new Agency(rawAgency)))
+				fetch(`${server.URL}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
+					.then(response => response.json())
+					.then(json => json.map((rawAgency: any) => new Agency(rawAgency, server.ID)))
 			)
 		}
 
-		// Put all received agency into one array
+		// Put all received agencies into one array
 		let flattenAgencies = [] as Agency[]
 		for (let p of promises) {
 			try {

@@ -78,6 +78,7 @@ class AsyncApp extends React.Component<RootState, any> {
 
 				<MapDrawer
 					transports        = {visibleTransports}
+					agencies          = {agencies.items}
 					selectedTransport = {transports.selected}
 					userPosition      = {userPosition}
 					mapIsOpen         = {drawers.mapIsOpen}

@@ -2,12 +2,14 @@ import * as React from 'react'
 import { connect, Dispatch } from 'react-redux'
 import Drawer from 'material-ui/Drawer'
 
-import { Position, Transport } from '../models'
-import TransportsPanel from './Map'
+import { Normalized } from '../reducers/normalize'
+import { Position, Transport, Agency, Server, TransportsCluster } from '../models'
+import TransportsMap from './Map'
 
 
 interface MapDrawerProps {
 	transports       : Transport[]
+	agencies         : Normalized<Agency>
 	selectedTransport: Transport
 	userPosition     : Position
 	mapIsOpen        : boolean
@@ -16,19 +18,23 @@ interface MapDrawerProps {
 
 
 export function MapDrawer(props: MapDrawerProps) {
-	const { transports, selectedTransport, userPosition, mapIsOpen, toggleOpen } = props
+	const { transports, agencies, selectedTransport, userPosition, mapIsOpen, toggleOpen } = props
 
-	const groupsOfTransports = transports
-		.reduce(((groups, t) => {
-			for (let g of groups) {
-				if (t.position.isEqual(g[0].position)) {
-					g.push(t)
-					return groups
+	const clustersOfTransports = transports.reduce(
+		((clusters, transport) => {
+			for (let cluster of clusters) {
+				if (transport.position.isEqual(cluster.position)) {
+					cluster.addTransport([transport])
+					return clusters
 				}
 			}
-			groups.push([t])
-			return groups
-		}), [] as Transport[][])
+			clusters.push(
+				new TransportsCluster(agencies[transport.agencyID], [transport])
+			)
+			return clusters
+		}),
+		[] as TransportsCluster[]
+	)
 
 
 	return (
@@ -40,9 +46,9 @@ export function MapDrawer(props: MapDrawerProps) {
 			width={"95%"}
 			onRequestChange={toggleOpen}
 		>
-			<TransportsPanel
-				groups={groupsOfTransports}
-				position={userPosition}
+			<TransportsMap
+				clusters={clustersOfTransports}
+				userPosition={userPosition}
 				selectedTransport={selectedTransport}
 			/>
 		</Drawer>

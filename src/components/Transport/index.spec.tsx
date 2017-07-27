@@ -8,13 +8,14 @@ import TransportComp from './index'
 import { Position, Transport } from '../../models'
 
 const transport = new Transport({
-	ID        : "transport-ID",
-	agencyID  : "transport-agencyID",
-	name      : "transport-name",
-	position  : {latitude: 0, longitude: 0},
-	image     : "transport-image",
-	group     : "transport-group",
-}, "transport-serverURL")
+	ID      : "transport-ID",
+	agencyID: "transport-agencyID",
+	name    : "transport-name",
+	position: {latitude: 0, longitude: 0},
+	iconURL : "transport-image",
+	group   : "transport-group",
+	passages: []
+})
 
 
 describe('Transport', () => {

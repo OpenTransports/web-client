@@ -56,7 +56,7 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 					Radius: <b>{this.state.radius}</b> meters
 					<Slider
 						min={20}
-						max={1000}
+						max={2000}
 						step={10}
 						value={radius}
 						onChange={(event, newRadius: number) => this.setState({ radius: newRadius })}

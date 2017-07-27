@@ -93,7 +93,7 @@ export function fetchTransports() {
 			promises.push(
 				fetch(`${serverURL}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
 					.then(response => response.json())
-					.then(json => json.map((rawTransport: any) => new Transport(rawTransport, serverURL)))
+					.then(json => json.map((rawTransport: any) => new Transport(rawTransport)))
 			)
 		}
 

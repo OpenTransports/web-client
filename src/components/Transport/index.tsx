@@ -29,7 +29,6 @@ export default class Transports extends React.Component<TransportsProps, any> {
 	render() {
 		const { transport, userPosition } = this.props
 		const containerClasses = `transport-container ${this.state.isOpen ? 'transport-container-open':''}`
-		const iconURL = `${transport.serverURL}/medias/${transport.agencyID}/${transport.image}`
 		return (
 			<div
 				className={containerClasses}
@@ -38,7 +37,7 @@ export default class Transports extends React.Component<TransportsProps, any> {
 				<div className="transport-header">
 					<span
 						className="transport-icon"
-						style={{backgroundImage: `url(${iconURL})`}}
+						style={{backgroundImage: `url(${transport.iconURL})`}}
 					></span>
 					<span className="transport-name">{capitalize(transport.name)}</span>
 					<span

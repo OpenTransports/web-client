@@ -9,7 +9,7 @@ export type RadiusState = number
 
 
 // DEFAULT STATE
-const defaultState: RadiusState = 200
+const defaultState: RadiusState = 500
 
 
 // REDUCERS

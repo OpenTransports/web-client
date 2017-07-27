@@ -9,7 +9,6 @@ import * as injectTapEventPlugin from 'react-tap-event-plugin'
 // TODO - stay alert and remove when this become unecessary
 injectTapEventPlugin();
 
-import '../env'
 import "./main.css"
 
 import configureStore from '../reducers/configureStore'

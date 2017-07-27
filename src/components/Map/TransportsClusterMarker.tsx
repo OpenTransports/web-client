@@ -3,24 +3,22 @@ import * as React from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import * as Leaflet from 'leaflet'
 
-import { Position, Transport } from '../../models'
+import { Position, TransportsCluster } from '../../models'
 import TransportComp from '../Transport'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-type GroupMarkerProp = {
-	group       : Array<Transport>
+type TransportsClusterMarkerProp = {
+	cluster     : TransportsCluster
 	userPosition: Position
 }
 
-export default function GroupMarker(props: GroupMarkerProp) {
-	const { userPosition, group } = props
-	const position = group[0].position
-	const iconURL  = `${group[0].serverURL}/medias/${group[0].agencyID}/${group[0].image}`
+export default function TransportsClusterMarker({ userPosition, cluster }: TransportsClusterMarkerProp) {
+	const iconURL = cluster.transports.length > 1 ? cluster.agency.iconsURL[cluster.type] : cluster.transports[0].iconURL
 	return (
 		<Marker
-			position={{lat: position.latitude, lng: position.longitude}}
-			alt={group[0].name}
+			position={{lat: cluster.position.latitude, lng: cluster.position.longitude}}
+			alt={cluster.agency.typesString[cluster.type]}
 			icon={Leaflet.icon({
 				iconUrl  : iconURL,
 				iconSize : [30, 30],
@@ -35,7 +33,7 @@ export default function GroupMarker(props: GroupMarkerProp) {
 			>
 				<MuiThemeProvider>
 					<div>
-						{group.map(t =>
+						{cluster.transports.map(t =>
 							<TransportComp
 								key={t.ID}
 								transport={t}

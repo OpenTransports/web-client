@@ -42,6 +42,10 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 				...state.items,
 				...normalizeArray(action.agencies)
 			},
+			activated: action.agencies.reduce(function(activated, agency){
+				activated[agency.ID] = activated[agency.ID] != undefined ? activated[agency.ID] : true
+				return activated
+			}, state.activated),
 			lastUpdated: { date: action.date, position: action.position },
 			isFetching: false,
 		}

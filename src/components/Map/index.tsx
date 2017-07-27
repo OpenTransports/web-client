@@ -4,16 +4,16 @@ import { Map, TileLayer } from 'react-leaflet'
 // import AntPath from 'react-leaflet-ant-path'
 import 'leaflet/dist/leaflet.css'
 
-import { Position, Transport } from '../../models'
-import GroupMarker from './GroupMarker'
+import { Position, Transport, TransportsCluster } from '../../models'
+import TransportsClusterMarker from './TransportsClusterMarker'
 import UserPositionMarker from './UserPositionMarker'
 
 import './style.css'
 
 
 interface TransportsMapProps {
-	groups            : Array<Array<Transport>>,
-	position          : Position,
+	clusters          : TransportsCluster[],
+	userPosition      : Position,
 	selectedTransport : Transport,
 }
 
@@ -22,12 +22,12 @@ type Viewport = {
   zoom: number,
 }
 
-export default class TransportsPanel extends React.Component<TransportsMapProps, {viewport: Viewport}> {
+export default class TransportsMap extends React.Component<TransportsMapProps, {viewport: Viewport}> {
 
 	constructor(props) {
 		super(props)
 		// this.locateUser = this.locateUser.bind(this)
-		this.state = {viewport:{center: [this.props.position.latitude, this.props.position.longitude], zoom: 15}}
+		this.state = {viewport:{center: [this.props.userPosition.latitude, this.props.userPosition.longitude], zoom: 15}}
 	}
 
 	// TODO - use when find a way to recenter the map
@@ -36,18 +36,18 @@ export default class TransportsPanel extends React.Component<TransportsMapProps,
 	// 		return {
 	// 			viewport: {
 	// 				zoom: prevState.viewport.zoom,
-	// 				center: [this.props.position.latitude, this.props.position.longitude],
+	// 				center: [this.props.userPosition.latitude, this.props.userPosition.longitude],
 	// 			}
 	// 		}
 	// 	})
 	// }
 
 	render(){
-		const { position, groups, selectedTransport } = this.props
+		const { userPosition, clusters, selectedTransport } = this.props
 
 		return (
 			<Map
-				center={{lat: position.latitude, lng: position.longitude}}
+				center={{lat: userPosition.latitude, lng: userPosition.longitude}}
 				zoom={15}
 				maxZoom={18}
 				bounceAtZoomLimits={true}
@@ -57,12 +57,12 @@ export default class TransportsPanel extends React.Component<TransportsMapProps,
 					url='https://{s}.tile.openstreetmap.se/hydda/base/{z}/{x}/{y}.png'
 					attribution='Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 				/>
-				<UserPositionMarker position={position}/>
-				{groups.map(group =>
-					<GroupMarker
-						key={group[0].ID}
-						group={group}
-						userPosition={position}
+				<UserPositionMarker position={userPosition}/>
+				{clusters.map(cluster =>
+					<TransportsClusterMarker
+						key={cluster.transports[0].ID}
+						cluster={cluster}
+						userPosition={userPosition}
 					/>
 				)}
 			</Map>
