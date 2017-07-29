@@ -4,7 +4,7 @@ declare module "*.json" {
 }
 
 
-declare var TEST_SERVER: {
+declare var MOCK_SERVERS: {
 	ID: number,
 	url: string,
 	position: {

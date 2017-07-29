@@ -6667,6 +6667,10 @@ webpack-dev-server@^2.6.1:
     webpack-dev-middleware "^1.11.0"
     yargs "^6.0.0"
 
+webpack-external-module@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/webpack-external-module/-/webpack-external-module-3.0.1.tgz#918e72b23f2e412010a6cc15c15a490c86a9a6f2"
+
 webpack-pwa-manifest@^3.0.1:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/webpack-pwa-manifest/-/webpack-pwa-manifest-3.1.5.tgz#5002cb16ebd9714f7f33149dd9ca4232cdcfa93c"

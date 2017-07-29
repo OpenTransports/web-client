@@ -10,9 +10,9 @@
   },
   "scripts": {
     "postinstall": "yarn build",
-    "build": "webpack",
-    "dev": "webpack-dev-server --progress --color",
-    "dev_test": "jest --watch & webpack-dev-server --progress --color",
+    "build": "touch .env && webpack",
+    "dev": "touch .env && webpack-dev-server --progress --color",
+    "dev_test": "jest --watch & yarn dev",
     "test": "jest"
   },
   "dependencies": {
@@ -68,6 +68,7 @@
     "uglifyjs-webpack-plugin": "1.0.0-beta.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.6.1",
+    "webpack-external-module": "^3.0.1",
     "webpack-pwa-manifest": "^3.0.1"
   }
 }

@@ -6,6 +6,7 @@ const CompressionPlugin  = require('compression-webpack-plugin')
 const HtmlWebpackPlugin  = require('html-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
 const UglifyJsPlugin     = require('uglifyjs-webpack-plugin')
+const webpackExternalModule = require("webpack-external-module")
 
 // Default dev config
 config = {
@@ -14,7 +15,7 @@ config = {
 	entry  : "./containers/Root.tsx",
 	output : {
 		path    : path.resolve(__dirname, "dist"),
-		filename: "app.js",
+		filename: "[name].js",
 	},
 	resolve: {
 		extensions : [".js", ".ts", ".json", ".tsx", ".css", "less"],
@@ -29,8 +30,23 @@ config = {
 	watch  : true,
 	devtool: "inline-source-map",
 	plugins: [
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			filename: "[name]-bundle.js",
+			minChunks: function(module) {
+				return webpackExternalModule.isExternal(module, {
+					smartDetection: false
+				})
+			}
+		}),
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.DefinePlugin(dotenv.config({sage:true}).parsed),
+		new webpack.DefinePlugin(Object.assign(
+			{
+				MOCK_SERVERS : null,
+				MOCK_POSITION: null,
+			},
+			dotenv.config().parsed,
+		)),
 		new HtmlWebpackPlugin({ template : "index.html" }),
 		new WebpackPwaManifest({
 			name            : "OpenTransports-test",
@@ -64,6 +80,15 @@ if (process.env.production) {
 	config.watch   = false
 	config.devtool = "source-map"
 	config.plugins = [
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			filename: "[name]-bundle.js",
+			minChunks: function(module) {
+				return webpackExternalModule.isExternal(module, {
+					smartDetection: false
+				})
+			}
+		}),
 		new HtmlWebpackPlugin({ template : "index.html" }),
 		new WebpackPwaManifest({
 			name            : "OpenTransports",
