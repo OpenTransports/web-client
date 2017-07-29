@@ -1,7 +1,7 @@
 [
 	{
 		"ID": "France.Paris",
-		"URL": "https://open-transports-paris.herokuapp.com",
+		"URL": "http://laudet.freeboxos.fr:56789",
 		"radius": 20000,
 		"center": {
 			"latitude":  48.856,
