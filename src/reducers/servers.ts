@@ -19,6 +19,11 @@ const defaultState: ServersState = {
 	activated: [] as string[],
 }
 
+if (TEST_SERVER != null) {
+	const testServer = new Server(TEST_SERVER)
+	defaultState.items = { [testServer.ID]: testServer }
+}
+
 
 // REDUCERS
 export function servers(state = defaultState, action: serversActions | radiusActions): ServersState {

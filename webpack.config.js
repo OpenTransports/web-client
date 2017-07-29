@@ -48,7 +48,6 @@ config = {
 		disableHostCheck  : true,
 		historyApiFallback: true,
 		noInfo: true,
-		https : true,
 		proxy : {
 		  '/transports': 'http://localhost:8080',
 		  '/agencies'  : 'http://localhost:8080',
@@ -74,6 +73,7 @@ if (process.env.production) {
 			background_color: '#2962FF',
 		}),
 		new webpack.DefinePlugin({
+			TEST_SERVER  : null,
 			MOCK_POSITION: null,
 			'process.env': {
 				NODE_ENV: JSON.stringify('production')
