@@ -98,7 +98,7 @@ if (process.env.production) {
 			background_color: '#2962FF',
 		}),
 		new webpack.DefinePlugin({
-			TEST_SERVER  : null,
+			MOCK_SERVERS : null,
 			MOCK_POSITION: null,
 			'process.env': {
 				NODE_ENV: JSON.stringify('production')
