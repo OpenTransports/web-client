@@ -1,7 +1,7 @@
 [
 	{
 		"ID": "France.Paris",
-		"URL": "http://laudet.freeboxos.fr:56789",
+		"URL": "https://artonge.duckdns.org/opentransports",
 		"radius": 20000,
 		"center": {
 			"latitude":  48.856,
