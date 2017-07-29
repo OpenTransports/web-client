@@ -11,7 +11,8 @@
   "scripts": {
     "postinstall": "yarn build",
     "build": "webpack",
-    "dev": "jest --watch & webpack-dev-server --progress --color",
+    "dev": "webpack-dev-server --progress --color",
+    "dev_test": "jest --watch & webpack-dev-server --progress --color",
     "test": "jest"
   },
   "dependencies": {

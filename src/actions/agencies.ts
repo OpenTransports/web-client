@@ -1,6 +1,6 @@
 import { Dispatch } from 'react-redux'
 
-import { Agency, Position, Server } from '../models'
+import { Agency, TransportType, Position, Server } from '../models'
 import { RootState } from '../reducers/configureStore'
 
 
@@ -8,6 +8,7 @@ import { RootState } from '../reducers/configureStore'
 export const REQUEST_AGENCIES = "REQUEST_AGENCIES"
 export const RECEIVE_AGENCIES = "RECEIVE_AGENCIES"
 export const TOGGLE_AGENCY    = "TOGGLE_AGENCY"
+export const TOGGLE_TYPE      = "TOGGLE_TYPE"
 
 export type requestAgenciesAction = {
 	type: 'REQUEST_AGENCIES',
@@ -24,10 +25,17 @@ export type toggleAgencyAction = {
 	agencyID: string,
 }
 
+type toggleTypeAction = {
+	type    : 'TOGGLE_TYPE'
+	agencyID: string
+	typeID  : TransportType
+}
+
 export type agenciesActions =
 	requestAgenciesAction |
 	receiveAgenciesAction |
-	toggleAgencyAction
+	toggleAgencyAction    |
+	toggleTypeAction
 
 
 // CREATORS
@@ -39,8 +47,8 @@ function requestAgencies(): requestAgenciesAction {
 
 function receiveAgencies(agencies: Array<Agency>, position: Position, radius: number): receiveAgenciesAction {
 	return {
-		type    : RECEIVE_AGENCIES,
-		date    : Date.now(),
+		type: RECEIVE_AGENCIES,
+		date: Date.now(),
 		agencies,
 		position,
 		radius,
@@ -50,10 +58,17 @@ function receiveAgencies(agencies: Array<Agency>, position: Position, radius: nu
 export function toggleAgency(agencyID: string): toggleAgencyAction {
 	return {
 		type: TOGGLE_AGENCY,
-		agencyID: agencyID,
+		agencyID,
 	}
 }
 
+export function toggleType(agencyID: string, typeID: TransportType): toggleTypeAction {
+	return {
+		type: TOGGLE_TYPE,
+		agencyID,
+		typeID,
+	}
+}
 
 // FUNCTIONS
 // 1. Dispatch requestAgencies action

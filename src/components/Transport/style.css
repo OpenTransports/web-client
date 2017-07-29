@@ -50,7 +50,7 @@
 .transport-passages-direction {
 	flex-grow: 1;
 	padding-right: 10px;
-	flex-shrink: 0.5;
+	flex-shrink: 1;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -60,7 +60,7 @@
 /* Times */
 .transport-passages-times-container {
 	display: flex;
-	flex-shrink: 1;
+	flex-shrink: 0;
 	overflow: hidden;
 	max-width: 35%;
 }

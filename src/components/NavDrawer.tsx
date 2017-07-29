@@ -9,19 +9,23 @@ import MenuItem from 'material-ui/MenuItem'
 import Toggle   from 'material-ui/Toggle'
 import Slider   from 'material-ui/Slider'
 
+import { AgenciesState, TransportsState } from '../reducers'
+import { TransportType } from '../models'
 
 export interface NavDrawerProps {
-	agencies      : { ID: string, name: string, activated: boolean}[],
+	agencies      : AgenciesState
 	radius        : number
 	lock          : boolean
 	isOpen        : boolean
 	toggleOpen    : () => void
 	onRadiusChange: (newRadius: number) => void
 	onAgencyToggle: (agencyID: string) => void
+	onTypeToggle  : (agencyID: string, typeID: TransportType) => void
 }
 
 
 export class NavDrawer extends React.Component<NavDrawerProps, any> {
+
 	constructor(props: NavDrawerProps) {
 		super(props)
 		this.state = { radius: this.props.radius }
@@ -29,9 +33,11 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 
 	render() {
 		const {
-			agencies, onAgencyToggle,
+			agencies,
+			onAgencyToggle, onTypeToggle,
 			radius, onRadiusChange,
 			isOpen, lock, toggleOpen } = this.props
+
 		return (
 			<Drawer
 				containerStyle={{display: 'flex', flexDirection: 'column'}}
@@ -41,14 +47,26 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 				onRequestChange={toggleOpen}
 			>
 				<List style={{flexGrow: 1}}>
-					{agencies.map(agency =>
-						<ListItem key={agency.ID}>
+					{Object.keys(agencies.items).map(agencyID =>
+						<ListItem
+							key={agencyID}
+							nestedItems={agencies.items[agencyID].types.map((typeID, i) =>
+								<ListItem
+									key={typeID}
+									style={{height: 40}}>
+									<Toggle
+										label={agencies.items[agencyID].typesString[i]}
+										defaultToggled={agencies.activatedTypes.indexOf(agencyID+String(typeID)) != -1}
+										onToggle={() => onTypeToggle(agencyID, typeID)}
+									/>
+								</ListItem>
+							)}
+						>
 							<Toggle
-								label={agency.name}
-								defaultToggled={agency.activated}
-								onToggle={() => onAgencyToggle(agency.ID)}
-							>
-							</Toggle>
+								label={agencies.items[agencyID].name}
+								defaultToggled={agencies.activated.indexOf(agencyID) != -1}
+								onToggle={() => onAgencyToggle(agencyID)}
+							/>
 						</ListItem>
 					)}
 				</List>

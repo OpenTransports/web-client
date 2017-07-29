@@ -11,8 +11,7 @@ import {
 	toggleMenu, toggleMap,
 	watchPosition,
 	changeRadius,
-	toggleAgency
-} from '../actions'
+	toggleAgency, toggleType } from '../actions'
 
 
 function mapStateToProps(state: RootState): RootState {
@@ -38,7 +37,8 @@ class AsyncApp extends React.Component<RootState, any> {
 		// Filter 3: Don't display Transports that are to fare
 		const visibleTransports = Object.keys(transports.items)
 			.map(transportID => transports.items[transportID])
-			.filter(transport => agencies.activated.indexOf[transport.agencyID] != -1)
+			.filter(transport => agencies.activated.indexOf(transport.agencyID) != -1 )
+			.filter(transport => agencies.activatedTypes.indexOf(transport.agencyID+String(transport.type)) != -1 )
 			.filter(transport => transport.passages.length > 0)
 			.filter(transport => transport.position.distanceFrom(userPosition) <= radius)
 
@@ -60,20 +60,14 @@ class AsyncApp extends React.Component<RootState, any> {
 				/>
 
 				<NavDrawer
-					agencies       = {
-						Object.keys(agencies.items).map(agencyID => {
-							return {
-								ID: agencyID,
-								name: agencies.items[agencyID].name,
-								activated: agencies.activated.indexOf(agencyID) != -1,
-							}
-						})}
+					agencies       = {agencies}
 					radius         = {radius}
 					lock           = {drawers.mapIsOpen}
 					isOpen         = {drawers.menuIsOpen}
 					toggleOpen     = {() => dispatch(toggleMenu())}
 					onRadiusChange = {(radius) => dispatch(changeRadius(radius))}
 					onAgencyToggle = {agencyID => dispatch(toggleAgency(agencyID))}
+					onTypeToggle   = {(agencyID, typeID) => dispatch(toggleType(agencyID, typeID))}
 				/>
 
 				<MapDrawer

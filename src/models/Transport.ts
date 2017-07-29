@@ -8,29 +8,29 @@ export class Transport {
 	position : Position
 	iconURL  : string
 	line     : string
-	passages?: Array<Passage>
+	passages?: Passage[]
 	count?   : number
 
 	constructor(rawTransport: any) {
 		if (rawTransport.passages == null) {
 			console.log(rawTransport)
 		}
-		this.ID        = rawTransport.ID
-		this.agencyID  = rawTransport.agencyID
-		this.name      = rawTransport.name
-		this.type      = rawTransport.type
-		this.position  = new Position(rawTransport.position)
-		this.iconURL   = rawTransport.iconURL
-		this.line      = rawTransport.line
-		this.passages  = rawTransport.passages
-		this.count     = rawTransport.count
+		this.ID       = rawTransport.ID
+		this.agencyID = rawTransport.agencyID
+		this.name     = rawTransport.name
+		this.type     = rawTransport.type
+		this.position = new Position(rawTransport.position)
+		this.iconURL  = rawTransport.iconURL
+		this.line     = rawTransport.line
+		this.passages = rawTransport.passages
+		this.count    = rawTransport.count
 	}
 }
 
 
 type Passage = {
 	direction: string
-	times: Array<string>
+	times: string[]
 }
 
 

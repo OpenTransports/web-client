@@ -18,7 +18,7 @@ export default function TransportsClusterMarker({ userPosition, cluster }: Trans
 	return (
 		<Marker
 			position={{lat: cluster.position.latitude, lng: cluster.position.longitude}}
-			alt={cluster.agency.typesString[cluster.type]}
+			alt={cluster.agency.typesString[cluster.agency.types.indexOf(cluster.type)]}
 			icon={Leaflet.icon({
 				iconUrl  : iconURL,
 				iconSize : [30, 30],

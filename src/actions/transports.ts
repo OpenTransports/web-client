@@ -1,14 +1,14 @@
 import { Dispatch } from 'react-redux'
 
-import { Transport, Position } from '../models'
+import { Transport, TransportType, Position } from '../models'
 import { RootState } from '../reducers/configureStore'
 
 
 // TYPES
-export const REQUEST_TRANSPORTS = "REQUEST_TRANSPORTS"
-export const RECEIVE_TRANSPORTS = "RECEIVE_TRANSPORTS"
-export const SELECT_TRANSPORT = "SELECT_TRANSPORT"
-export const UNSELECT_TRANSPORT = "UNSELECT_TRANSPORT"
+export const REQUEST_TRANSPORTS    = "REQUEST_TRANSPORTS"
+export const RECEIVE_TRANSPORTS    = "RECEIVE_TRANSPORTS"
+export const SELECT_TRANSPORT      = "SELECT_TRANSPORT"
+export const UNSELECT_TRANSPORT    = "UNSELECT_TRANSPORT"
 
 type requestTransportsAction = {
 	type: 'REQUEST_TRANSPORTS'
@@ -34,7 +34,7 @@ type unselectTransportAction = {
 export type transportActions =
 	requestTransportsAction |
 	receiveTransportsAction |
-	selectTransportAction |
+	selectTransportAction   |
 	unselectTransportAction
 
 

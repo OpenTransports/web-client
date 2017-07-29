@@ -4,26 +4,28 @@ import { Position, Agency } from '../models'
 
 import {
 	REQUEST_AGENCIES, RECEIVE_AGENCIES,
-	TOGGLE_AGENCY,
+	TOGGLE_AGENCY, TOGGLE_TYPE,
 	agenciesActions
 } from '../actions'
 
 
 // STATE TYPE
 export type AgenciesState = {
-	items      : Normalized<Agency>
-	activated  : string[]
-	isFetching : boolean
-	lastUpdated: { date: number, position: Position }
+	items         : Normalized<Agency>
+	activated     : string[]
+	activatedTypes: string[]
+	isFetching    : boolean
+	lastUpdated   : { date: number, position: Position }
 }
 
 
 // DEFAULT STATE
 const defaultState: AgenciesState = {
-	items      : {},
-	activated  : [] as string[],
-	isFetching : false,
-	lastUpdated: { date: 0, position: new Position() },
+	items         : {},
+	activated     : [] as string[],
+	activatedTypes: [],
+	isFetching    : false,
+	lastUpdated   : { date: 0, position: new Position() },
 }
 
 
@@ -40,12 +42,16 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 			...state,
 			items: {
 				...state.items,
-				...normalizeArray(action.agencies)
+				...normalizeArray(action.agencies),
 			},
-			activated: action.agencies.reduce(function(activated, agency){
-				activated[agency.ID] = activated[agency.ID] != undefined ? activated[agency.ID] : true
-				return activated
-			}, state.activated),
+			activated: action.agencies
+				.filter(agency => state.items[agency.ID] == undefined)
+				.map(agency => agency.ID)
+				.concat(state.activated),
+			activatedTypes: action.agencies
+				.filter(agency => state.items[agency.ID] == undefined)
+				.map(agency => agency.types.map(typeID => agency.ID+String(typeID)))
+				.reduce(((allTypes, types) => allTypes.concat(types)), state.activatedTypes),
 			lastUpdated: { date: action.date, position: action.position },
 			isFetching: false,
 		}
@@ -53,6 +59,11 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 		return {
 			...state,
 			activated: toggleItem(state.activated, action.agencyID)
+		}
+	case TOGGLE_TYPE:
+		return {
+			...state,
+			activatedTypes: toggleItem(state.activatedTypes, action.agencyID+String(action.typeID))
 		}
 	default:
 		return state

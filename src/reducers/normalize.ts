@@ -14,7 +14,7 @@ export function normalizeArray<T extends IDable>(array: T[]): Normalized<T> {
 }
 
 
-export function toggleItem(array: string[], item: string): string[] {
+export function toggleItem<T>(array: T[], item: T): T[] {
 	const index = array.indexOf(item)
 	if (index == -1) {
 		return [ ...array.slice(), item ]
