@@ -1,20 +1,23 @@
+#!/bin/sh -x
+set -x
+
 export production=true
 
-echo 'CLONE'
-git clone git@github.com:OpenTransports/opentransports.github.io.git
+if [ ! -d opentransports.github.io ]
+then
+	git clone git@github.com:OpenTransports/opentransports.github.io.git
+fi
 
-echo 'CLEAN'
-rm dist/*
-rm opentransports.github.io/*
+rm -f dist/*
+rm -f opentransports.github.io/*
 
-echo 'BUILD'
 yarn build
 cp dist/* opentransports.github.io
 
-echo 'COMMIT AND PUSH'
 cd opentransports.github.io
-git status
-git commit -am "release - $(date +'%d/%m/%Y %H:%M')"
+
+git status -s
+git commit -am "$(date +'%d/%m/%Y %H:%M') - $1"
 git push
 
 cd ../
