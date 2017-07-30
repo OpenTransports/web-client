@@ -60,10 +60,10 @@ export function watchPosition() {
 		})
 
 		// Watch heading
-		window.ondeviceorientation = function({ absolute, gamma }) {
+		window.ondeviceorientation = function({ absolute, alpha }) {
 			if (absolute) {
 				const { userPosition, radius } = getState()
-				dispatch(updatePosition(new Position({ ...userPosition, heading: gamma }), radius))
+				dispatch(updatePosition(new Position({ ...userPosition, heading: alpha }), radius))
 			}
 		}
 	}
