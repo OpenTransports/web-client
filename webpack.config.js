@@ -116,8 +116,8 @@ if (process.env.production) {
 	]
 	config.performance = {
 		hints            : "warning",
-		maxAssetSize     : 200000,
-		maxEntrypointSize: 400000,
+		maxAssetSize     : 1000000,
+		maxEntrypointSize: 1000000,
 	}
 	config.devServer = undefined
 }
