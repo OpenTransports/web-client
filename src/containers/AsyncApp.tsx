@@ -4,7 +4,7 @@ import { ThunkAction } from 'redux-thunk';
 
 import { Header, NavDrawer, MapDrawer, TransportsList } from '../components'
 
-import { Position } from '../models'
+import { Position, Transport } from '../models'
 import { RootState } from '../reducers/configureStore'
 import {
 	fetchTransports, fetchAgencies,
@@ -32,15 +32,34 @@ class AsyncApp extends React.Component<RootState, any> {
 	render()  {
 		const { dispatch, agencies, transports, userPosition, radius, drawers } = this.props
 
-		// Filter 1: Don't display Transports from non activated agencies
-		// Filter 2: Don't display Transports without an incomming passage
-		// Filter 3: Don't display Transports that are to fare
+		// 0 - Map items to Transports array
+		// 1 - Filter: Don't display Transports that are to fare
+		// 2 - Filter: Don't display Transports from non activated agencies
+		// 3 - Filter: Don't display Transports from non activated types
+		// 4 - Filter: Don't display Transports without an incomming passage
+		// 5 - Sort  : Order by distance from the user
+		// 6 - Reduce: Only allow transports of same line if they have at least one passage with a different direction
 		const visibleTransports = Object.keys(transports.items)
 			.map(transportID => transports.items[transportID])
+			.filter(transport => transport.position.distanceFrom(userPosition) <= radius)
 			.filter(transport => agencies.activated.indexOf(transport.agencyID) != -1 )
 			.filter(transport => agencies.activatedTypes.indexOf(transport.agencyID+String(transport.type)) != -1 )
 			.filter(transport => transport.passages.length > 0)
-			.filter(transport => transport.position.distanceFrom(userPosition) <= radius)
+			.sort((t1, t2) => t1.position.distanceFrom(userPosition) - t2.position.distanceFrom(userPosition))
+			.reduce(((allTransports, t1) => {
+				// Get all passages from allTransports for the line of t1
+				const sameLinePassages = allTransports
+					.filter(t2 => t1.line == t2.line)
+					.reduce(((passages, t2) => passages.concat(t2.passages)), [])
+				// Get unique passage in t1
+				const uniquesPassages = t1.passages
+					.filter(p1 => sameLinePassages.find(p2 => p1.direction == p2.direction) == undefined)
+				// If t1 contains uniques passages, add it to allTransports
+				if (uniquesPassages.length > 0) {
+					allTransports.push(t1)
+				}
+				return allTransports
+			}), [] as Transport[])
 
 		return (
 			<div style={{

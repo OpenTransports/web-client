@@ -64,6 +64,7 @@ config = {
 		disableHostCheck  : true,
 		historyApiFallback: true,
 		noInfo: true,
+		https: Boolean(dotenv.config().parsed.HTTPS),
 		proxy : {
 		  '/transports': 'http://localhost:8080',
 		  '/agencies'  : 'http://localhost:8080',

@@ -9,7 +9,7 @@ import TransportComp from './Transport'
 
 
 interface TransportsListProps {
-	transports  : Array<Transport>
+	transports  : Transport[]
 	userPosition: Position
 }
 
@@ -24,16 +24,17 @@ export function TransportsList(props: TransportsListProps) {
 		}}>
 			{transports
 				.sort((t1, t2) => t1.position.distanceFrom(userPosition) - t2.position.distanceFrom(userPosition))
-				.map(t =>
-				<ListItem key={t.ID} innerDivStyle={{padding: '16px 10px'}}>
-					<Paper style={{backgroundColor: 'white'}}>
-						<TransportComp
-							transport={t}
-							userPosition={userPosition}
-						/>
-					</Paper>
-				</ListItem>
-			)}
+				.map(transport =>
+					<ListItem key={transport.ID} innerDivStyle={{padding: '16px 10px'}}>
+						<Paper style={{backgroundColor: 'white'}}>
+							<TransportComp
+								transport={transport}
+								userPosition={userPosition}
+							/>
+						</Paper>
+					</ListItem>
+				)
+			}
 		</List>
 	)
 }
