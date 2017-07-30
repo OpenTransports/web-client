@@ -8,17 +8,18 @@ import TransportsMap from './Map'
 
 
 interface MapDrawerProps {
-	transports       : Transport[]
-	agencies         : Normalized<Agency>
-	selectedTransport: Transport
-	userPosition     : Position
-	mapIsOpen        : boolean
-	toggleOpen       : () => void
+	transports        : Transport[]
+	agencies          : Normalized<Agency>
+	selectedTransport : string
+	userPosition      : Position
+	mapIsOpen         : boolean
+	toggleOpen        : () => void
+	onDirectionRequest: (transportID: string) => void
 }
 
 
 export function MapDrawer(props: MapDrawerProps) {
-	const { transports, agencies, selectedTransport, userPosition, mapIsOpen, toggleOpen } = props
+	const { transports, agencies, selectedTransport, onDirectionRequest, userPosition, mapIsOpen, toggleOpen } = props
 
 	const clustersOfTransports = transports.reduce(
 		((clusters, transport) => {
@@ -50,6 +51,7 @@ export function MapDrawer(props: MapDrawerProps) {
 				clusters={clustersOfTransports}
 				userPosition={userPosition}
 				selectedTransport={selectedTransport}
+				onDirectionRequest={onDirectionRequest}
 			/>
 		</Drawer>
 	)

@@ -2,7 +2,7 @@ import { Dispatch } from 'react-redux'
 
 import { Transport, TransportType, Position } from '../models'
 import { RootState } from '../reducers/configureStore'
-
+import { toggleMap } from '.'
 
 // TYPES
 export const REQUEST_TRANSPORTS    = "REQUEST_TRANSPORTS"
@@ -23,8 +23,8 @@ type receiveTransportsAction = {
 }
 
 type selectTransportAction = {
-	type     : 'SELECT_TRANSPORT'
-	transport: Transport
+	type       : 'SELECT_TRANSPORT'
+	transportID: string
 }
 
 type unselectTransportAction = {
@@ -47,22 +47,15 @@ function requestTransports(): requestTransportsAction {
 
 function receiveTransports(transports: Array<Transport>, position: Position, radius: number): receiveTransportsAction {
 	return {
-		type      : RECEIVE_TRANSPORTS,
-		date      : Date.now(),
+		type: RECEIVE_TRANSPORTS,
+		date: Date.now(),
 		transports,
 		position,
 		radius
 	}
 }
 
-export function selectTransport(transport: Transport): selectTransportAction {
-	return {
-		type     : SELECT_TRANSPORT,
-		transport: transport,
-	}
-}
-
-export function unselectTransport(transport: Transport): unselectTransportAction {
+export function unselectTransport(): unselectTransportAction {
 	return {
 		type: UNSELECT_TRANSPORT,
 	}
@@ -108,5 +101,17 @@ export function fetchTransports() {
 		}
 
 		dispatch(receiveTransports(flattenTransports, userPosition, radius))
+	}
+}
+
+export function selectTransport(transportID: string) {
+	return (dispatch: Dispatch<{}>, getState: () => RootState) => {
+		if (!getState().drawers.mapIsOpen) {
+			dispatch(toggleMap())
+		}
+		dispatch({
+			type: SELECT_TRANSPORT,
+			transportID,
+		})
 	}
 }

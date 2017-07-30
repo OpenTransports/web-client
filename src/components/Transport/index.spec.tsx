@@ -26,6 +26,7 @@ describe('Transport', () => {
 				<TransportComp
 					transport={transport}
 					userPosition={new Position()}
+					onDirectionRequest={(transportID) => null}
 				/>
 			</MuiThemeProvider>
 			,document.createElement('div')

@@ -12,9 +12,10 @@ import './style.css'
 
 
 interface TransportsMapProps {
-	clusters          : TransportsCluster[],
-	userPosition      : Position,
-	selectedTransport : Transport,
+	clusters          : TransportsCluster[]
+	userPosition      : Position
+	selectedTransport : string
+	onDirectionRequest: (transportID) => void
 }
 
 type Viewport = {
@@ -43,7 +44,7 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 	// }
 
 	render(){
-		const { userPosition, clusters, selectedTransport } = this.props
+		const { userPosition, clusters, selectedTransport, onDirectionRequest } = this.props
 
 		return (
 			<Map
@@ -63,6 +64,7 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 						key={cluster.transports[0].ID}
 						cluster={cluster}
 						userPosition={userPosition}
+						onDirectionRequest={onDirectionRequest}
 					/>
 				)}
 			</Map>

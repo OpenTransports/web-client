@@ -9,8 +9,8 @@ import { RootState } from '../reducers/configureStore'
 import {
 	fetchTransports, fetchAgencies,
 	toggleMenu, toggleMap,
-	watchPosition,
-	changeRadius,
+	watchPosition, changeRadius,
+	selectTransport,
 	toggleAgency, toggleType } from '../actions'
 
 
@@ -96,11 +96,13 @@ class AsyncApp extends React.Component<RootState, any> {
 					userPosition      = {userPosition}
 					mapIsOpen         = {drawers.mapIsOpen}
 					toggleOpen        = {() => dispatch(toggleMap())}
+					onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}
 				/>
 
 				<TransportsList
 					transports={visibleTransports}
 					userPosition={userPosition}
+					onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}
 				/>
 			</div>
 		)

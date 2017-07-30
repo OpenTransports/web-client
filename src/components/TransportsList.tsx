@@ -9,12 +9,13 @@ import TransportComp from './Transport'
 
 
 interface TransportsListProps {
-	transports  : Transport[]
-	userPosition: Position
+	transports        : Transport[]
+	userPosition      : Position
+	onDirectionRequest: (transportID: string) => void
 }
 
 export function TransportsList(props: TransportsListProps) {
-	const { transports, userPosition } = props
+	const { transports, userPosition, onDirectionRequest } = props
 
 	return (
 		<List style={{
@@ -30,6 +31,7 @@ export function TransportsList(props: TransportsListProps) {
 							<TransportComp
 								transport={transport}
 								userPosition={userPosition}
+								onDirectionRequest={onDirectionRequest}
 							/>
 						</Paper>
 					</ListItem>

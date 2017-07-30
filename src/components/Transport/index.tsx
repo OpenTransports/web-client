@@ -8,8 +8,9 @@ import { capitalize } from '../../filters'
 import './style.css'
 
 interface TransportsProps {
-	transport   : Transport
-	userPosition: Position
+	transport         : Transport
+	userPosition      : Position
+	onDirectionRequest: (transportID: string) => void
 }
 
 export default class Transports extends React.Component<TransportsProps, any> {
@@ -27,7 +28,7 @@ export default class Transports extends React.Component<TransportsProps, any> {
 	}
 
 	render() {
-		const { transport, userPosition } = this.props
+		const { transport, userPosition, onDirectionRequest } = this.props
 		const containerClasses = `transport-container ${this.state.isOpen ? 'transport-container-open':''}`
 		return (
 			<div
@@ -44,7 +45,11 @@ export default class Transports extends React.Component<TransportsProps, any> {
 						className="transport-distance"
 						style={{color: grey500}}
 					>
-						<DirectionIcon style={{width: 16, height: 16, marginRight: 5}} color={grey500}/>
+						<DirectionIcon
+							onClick={() => onDirectionRequest(transport.ID)}
+							style={{width: 16, height: 16, marginRight: 5}}
+							color={grey500}
+						/>
 						{transport.position.distanceFrom(userPosition)} m
 					</span>
 				</div>
