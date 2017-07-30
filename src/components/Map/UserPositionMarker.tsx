@@ -10,11 +10,15 @@ type UserPositionMarkerProp = {
 	position: Position
 }
 
-export default function UserPositionMarker(props: UserPositionMarkerProp) {
+export default function UserPositionMarker({position}: UserPositionMarkerProp) {
 	return (
 		<Marker
-			icon={Leaflet.divIcon({className: 'map-user-position-marker-icon'})}
-			position={{lat: props.position.latitude, lng: props.position.longitude }}
+			icon={Leaflet.divIcon({
+				html: position.heading ?
+					`<div class='map-user-position-marker-icon map-user-position-heading-marker-icon' style='transform: rotate(${position.heading}deg);'></div>` :
+					`<div class='map-user-position-marker-icon'></div>`
+			})}
+			position={{lat: position.latitude, lng: position.longitude }}
 		/>
 	)
 }

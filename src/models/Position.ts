@@ -1,6 +1,7 @@
 export class Position {
 	latitude : number
 	longitude: number
+	heading? : number
 
 	// Default position is { 0, 0 }
 	constructor(rawPosition?: any) {
@@ -11,6 +12,7 @@ export class Position {
 	map(rawPosition: any): void {
 		this.latitude  = rawPosition.latitude
 		this.longitude = rawPosition.longitude
+		this.heading   = rawPosition.heading
 	}
 
 	// @param position <Position> the position
