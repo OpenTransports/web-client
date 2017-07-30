@@ -6,7 +6,7 @@ import * as Leaflet from 'leaflet'
 import { Position, TransportsCluster } from '../../models'
 import TransportComp from '../Transport'
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 type TransportsClusterMarkerProp = {
 	cluster     : TransportsCluster

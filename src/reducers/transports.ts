@@ -12,7 +12,7 @@ import {
 // STATE TYPE
 export type TransportsState = {
 	items      : Normalized<Transport>
-	selected   : string | null
+	selected   : Transport | null
 	isFetching : boolean
 	lastUpdated: { date: number, position: Position }
 }
@@ -48,7 +48,7 @@ export function transports(state = defaultState, action: transportActions): Tran
 	case SELECT_TRANSPORT:
 		return {
 			...state,
-			selected: action.transportID
+			selected: action.transport
 		}
 	case UNSELECT_TRANSPORT:
 		return {

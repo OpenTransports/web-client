@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Map, TileLayer } from 'react-leaflet'
 // import Control from 'react-leaflet-control'
-// import AntPath from 'react-leaflet-ant-path'
+import AntPath from 'react-leaflet-ant-path'
 import 'leaflet/dist/leaflet.css'
 
 import { Position, Transport, TransportsCluster } from '../../models'
@@ -14,7 +14,7 @@ import './style.css'
 interface TransportsMapProps {
 	clusters          : TransportsCluster[]
 	userPosition      : Position
-	selectedTransport : string
+	selectedTransport : Transport
 	onDirectionRequest: (transportID) => void
 }
 
@@ -67,20 +67,21 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 						onDirectionRequest={onDirectionRequest}
 					/>
 				)}
+				{selectedTransport &&
+					<AntPath
+						positions={[
+							{lat: selectedTransport.position.latitude, lng: selectedTransport.position.longitude},
+							{lat: userPosition.latitude, lng: userPosition.longitude},
+						]}
+					/>
+				}
 			</Map>
 		)
 	}
 }
 
 // TODO - When I now how to import a non typed libs, add the following lines
-// {selectedTransport &&
-// 	<AntPath
-// 	positions={[
-// 		{lat: selectedTransport.position.latitude, lng: selectedTransport.position.longitude},
-// 		{lat: position.latitude, lng: position.longitude},
-// 	]}
-// 	/>
-// }
+
 // <Control position="bottomright" >
 // <button
 // >

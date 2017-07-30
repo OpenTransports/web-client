@@ -3691,9 +3691,9 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet.markercluster@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.0.6.tgz#2d8069ef7881142e71173d86fb55d332af4742d7"
+leaflet-ant-path@^0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/leaflet-ant-path/-/leaflet-ant-path-0.6.4.tgz#9c5f86c70a8966ad03b271fbb605371bc3d7d1cd"
 
 leaflet@^1.0.3:
   version "1.1.0"
@@ -5169,7 +5169,7 @@ react-event-listener@^0.4.5:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-leaflet-ant-path@^0.1.0:
+react-leaflet-ant-path@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/react-leaflet-ant-path/-/react-leaflet-ant-path-0.1.1.tgz#ad9f79e0b5acc3bbc5242681498b7b42be32b437"
 
@@ -5178,10 +5178,6 @@ react-leaflet-control@^1.4.0:
   resolved "https://registry.yarnpkg.com/react-leaflet-control/-/react-leaflet-control-1.4.0.tgz#b2a34581943e1d3b02062ed7a0ec79e7acc7b923"
   dependencies:
     prop-types "^15.5.7"
-
-react-leaflet-markercluster@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/react-leaflet-markercluster/-/react-leaflet-markercluster-1.1.6.tgz#d6d6355738813f09fb43592a9448aef7392a319f"
 
 react-leaflet@^1.4.0:
   version "1.4.0"

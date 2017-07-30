@@ -10,7 +10,7 @@ import TransportsMap from './Map'
 interface MapDrawerProps {
 	transports        : Transport[]
 	agencies          : Normalized<Agency>
-	selectedTransport : string
+	selectedTransport : Transport
 	userPosition      : Position
 	mapIsOpen         : boolean
 	toggleOpen        : () => void

@@ -16,15 +16,15 @@ type requestTransportsAction = {
 
 type receiveTransportsAction = {
 	type      : 'RECEIVE_TRANSPORTS'
-	transports: Array<Transport>
+	transports: Transport[]
 	date      : number
 	radius    : number
 	position  : Position
 }
 
 type selectTransportAction = {
-	type       : 'SELECT_TRANSPORT'
-	transportID: string
+	type     : 'SELECT_TRANSPORT'
+	transport: Transport
 }
 
 type unselectTransportAction = {
@@ -110,8 +110,8 @@ export function selectTransport(transportID: string) {
 			dispatch(toggleMap())
 		}
 		dispatch({
-			type: SELECT_TRANSPORT,
-			transportID,
+			type     : SELECT_TRANSPORT,
+			transport: getState().transports.items[transportID],
 		})
 	}
 }
