@@ -12,9 +12,6 @@ export class Transport {
 	count?   : number
 
 	constructor(rawTransport: any) {
-		if (rawTransport.passages == null) {
-			console.log(rawTransport)
-		}
 		this.ID       = rawTransport.ID
 		this.agencyID = rawTransport.agencyID
 		this.name     = rawTransport.name
