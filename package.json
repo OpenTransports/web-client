@@ -10,7 +10,7 @@
   },
   "scripts": {
     "postinstall": "yarn build",
-    "build": "touch .env && webpack",
+    "build": "webpack",
     "dev": "touch .env && webpack-dev-server --progress --color",
     "dev_test": "jest --watch & yarn dev",
     "test": "jest"

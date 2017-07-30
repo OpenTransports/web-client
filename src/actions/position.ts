@@ -39,6 +39,7 @@ function updatePosition(position: Position, radius: number): positionActions {
 // 		- The last update was more than 2 minutes ago
 export function watchPosition() {
 	return (dispatch: Dispatch<{}>, getState: () => RootState ) => {
+		// Watch position
 		navigator.geolocation.watchPosition(location => {
 			const prevState = getState()
 
@@ -57,5 +58,11 @@ export function watchPosition() {
 				dispatch(fetchTransports())
 			}
 		})
+
+		// Watch heading
+		window.ondeviceorientation = function({alpha}) {
+			const { userPosition, radius } = getState()
+			dispatch(updatePosition(new Position({ ...userPosition, heading: alpha }), radius))
+		}
 	}
 }
