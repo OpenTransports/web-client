@@ -1,5 +1,7 @@
 # OpenTransports web client
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/OpenTransports/web-client.svg)](https://greenkeeper.io/)
+
 ---
 Progressive web application that fetch the nearest public transports all around the world (or at least could) using the OpenTransports protocol.
 
