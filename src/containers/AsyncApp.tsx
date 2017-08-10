@@ -2,6 +2,9 @@ import * as React from 'react'
 import { connect, Dispatch } from 'react-redux'
 import { ThunkAction } from 'redux-thunk';
 
+import RaisedButton from 'material-ui/RaisedButton'
+import LocationOnIcon from 'material-ui/svg-icons/communication/location-on'
+
 import { Header, NavDrawer, MapDrawer, TransportsList } from '../components'
 
 import { Position, Transport } from '../models'
@@ -25,12 +28,8 @@ class AsyncApp extends React.Component<RootState, any> {
 		super(props)
 	}
 
-	componentDidMount() {
-		this.props.dispatch(watchPosition())
-	}
-
 	render()  {
-		const { dispatch, agencies, transports, userPosition, radius, drawers } = this.props
+		const { dispatch, agencies, transports, routes, userPosition, radius, drawers } = this.props
 
 		// 0 - Map items to Transports array
 		// 1 - Filter: Don't display Transports that are to fare
@@ -93,17 +92,30 @@ class AsyncApp extends React.Component<RootState, any> {
 					transports        = {visibleTransports}
 					agencies          = {agencies.items}
 					selectedTransport = {transports.selected}
+					route             = {routes.items[routes.display]}
 					userPosition      = {userPosition}
 					mapIsOpen         = {drawers.mapIsOpen}
 					toggleOpen        = {() => dispatch(toggleMap())}
 					onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}
 				/>
 
-				<TransportsList
-					transports={visibleTransports}
-					userPosition={userPosition}
-					onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}
-				/>
+
+				{userPosition.latitude === 0 && userPosition.latitude === 0 &&
+					<RaisedButton
+						onClick={() => dispatch(watchPosition())}
+						label="OpenTransports needs your location"
+						secondary={true}
+						icon={<LocationOnIcon/>}
+					/>
+				}
+
+				{userPosition.latitude !== 0 && userPosition.latitude !== 0 &&
+					<TransportsList
+						transports={visibleTransports}
+						userPosition={userPosition}
+						onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}
+					/>
+				}
 			</div>
 		)
 	}

@@ -4,7 +4,7 @@ import { Map, TileLayer } from 'react-leaflet'
 import AntPath from 'react-leaflet-ant-path'
 import 'leaflet/dist/leaflet.css'
 
-import { Position, Transport, TransportsCluster } from '../../models'
+import { Position, Transport, TransportsCluster, Route } from '../../models'
 import TransportsClusterMarker from './TransportsClusterMarker'
 import UserPositionMarker from './UserPositionMarker'
 
@@ -14,13 +14,14 @@ import './style.css'
 interface TransportsMapProps {
 	clusters          : TransportsCluster[]
 	userPosition      : Position
+	route             : Route
 	selectedTransport : Transport
 	onDirectionRequest: (transportID) => void
 }
 
 type Viewport = {
   center: [number, number],
-  zoom: number,
+  zoom  : number,
 }
 
 export default class TransportsMap extends React.Component<TransportsMapProps, {viewport: Viewport}> {
@@ -28,7 +29,11 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 	constructor(props) {
 		super(props)
 		// this.locateUser = this.locateUser.bind(this)
-		this.state = {viewport:{center: [this.props.userPosition.latitude, this.props.userPosition.longitude], zoom: 15}}
+		this.state = {
+			viewport: {
+				center: [this.props.userPosition.latitude, this.props.userPosition.longitude], zoom: 15
+			}
+		}
 	}
 
 	// TODO - use when find a way to recenter the map
@@ -44,7 +49,7 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 	// }
 
 	render(){
-		const { userPosition, clusters, selectedTransport, onDirectionRequest } = this.props
+		const { userPosition, clusters, selectedTransport, onDirectionRequest, route } = this.props
 
 		return (
 			<Map
@@ -58,7 +63,9 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 					url='https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png'
 					attribution='Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 				/>
+
 				<UserPositionMarker position={userPosition}/>
+
 				{clusters.map(cluster =>
 					<TransportsClusterMarker
 						key={cluster.transports[0].ID}
@@ -67,23 +74,18 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 						onDirectionRequest={onDirectionRequest}
 					/>
 				)}
-				{selectedTransport &&
+
+				{selectedTransport && route &&
 					<AntPath
-						positions={[
-							{lat: selectedTransport.position.latitude, lng: selectedTransport.position.longitude},
-							{lat: userPosition.latitude, lng: userPosition.longitude},
-						]}
+					positions={route.points.map((position) => {
+						return {
+							lat: position.latitude,
+							lng: position.longitude,
+						}
+					})}
 					/>
 				}
 			</Map>
 		)
 	}
 }
-
-// TODO - When I now how to import a non typed libs, add the following lines
-
-// <Control position="bottomright" >
-// <button
-// >
-// </button>
-// </Control>

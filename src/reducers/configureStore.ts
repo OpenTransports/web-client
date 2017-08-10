@@ -9,6 +9,7 @@ import { agencies      , AgenciesState   } from './agencies'
 import { userPosition  , PositionState   } from './position'
 import { drawers       , DrawersState    } from './drawers'
 import { radius        , RadiusState     } from './radius'
+import { routes        , RoutesState     } from './routes'
 
 
 export interface RootState extends Store<{}> {
@@ -17,7 +18,8 @@ export interface RootState extends Store<{}> {
 	agencies    : AgenciesState
 	transports  : TransportsState
 	drawers     : DrawersState
-	radius      : number
+	radius      : RadiusState
+	routes      : RoutesState
 }
 
 
@@ -30,6 +32,7 @@ export default function configureStore(preloadedState?: any) {
 			userPosition,
 			drawers,
 			radius,
+			routes,
 		}),
 		preloadedState,
 		composeWithDevTools(

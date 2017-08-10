@@ -3,7 +3,7 @@ import { connect, Dispatch } from 'react-redux'
 import Drawer from 'material-ui/Drawer'
 
 import { Normalized } from '../reducers/normalize'
-import { Position, Transport, Agency, Server, TransportsCluster } from '../models'
+import { Position, Transport, Agency, Server, TransportsCluster, Route } from '../models'
 import TransportsMap from './Map'
 
 
@@ -11,6 +11,7 @@ interface MapDrawerProps {
 	transports        : Transport[]
 	agencies          : Normalized<Agency>
 	selectedTransport : Transport
+	route             : Route
 	userPosition      : Position
 	mapIsOpen         : boolean
 	toggleOpen        : () => void
@@ -19,7 +20,13 @@ interface MapDrawerProps {
 
 
 export function MapDrawer(props: MapDrawerProps) {
-	const { transports, agencies, selectedTransport, onDirectionRequest, userPosition, mapIsOpen, toggleOpen } = props
+	const {
+		agencies,
+		transports, selectedTransport,
+		route,
+		onDirectionRequest, userPosition,
+		mapIsOpen, toggleOpen
+	} = props
 
 	const clustersOfTransports = transports.reduce(
 		((clusters, transport) => {
@@ -50,6 +57,7 @@ export function MapDrawer(props: MapDrawerProps) {
 			<TransportsMap
 				clusters={clustersOfTransports}
 				userPosition={userPosition}
+				route={route}
 				selectedTransport={selectedTransport}
 				onDirectionRequest={onDirectionRequest}
 			/>

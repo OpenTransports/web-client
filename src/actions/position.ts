@@ -39,6 +39,7 @@ function updatePosition(position: Position, radius: number): positionActions {
 // 		- The last update was more than 2 minutes ago
 export function watchPosition() {
 	return (dispatch: Dispatch<{}>, getState: () => RootState ) => {
+		// window.alert("OpenTransports needs your position to work")
 		// Watch position
 		navigator.geolocation.watchPosition(location => {
 			const prevState = getState()
@@ -46,6 +47,9 @@ export function watchPosition() {
 			// Mock user position during dev
 			// Can be change by creating an .env file (see .env.example)
 			const newPosition = new Position(MOCK_POSITION || location.coords)
+
+			if (newPosition.isEqual(prevState.userPosition))
+				return
 
 			dispatch(updatePosition(newPosition, prevState.radius))
 
@@ -57,7 +61,7 @@ export function watchPosition() {
 				prevState.transports.lastUpdated.date - Date.now() > 2*60*1000) {
 				dispatch(fetchTransports())
 			}
-		})
+		}, (error) => console.error(error))
 
 		// Watch heading
 		window.ondeviceorientation = function({ absolute, alpha }) {

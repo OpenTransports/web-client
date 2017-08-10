@@ -20,11 +20,6 @@ export default class TransportsClusterMarker extends MapComponent<TransportsClus
 		super(props)
 	}
 
-	componentDidUpdate() {
-		console.log(this)
-		console.log(this['leafletElement'])
-	}
-
 	render() {
 		const { userPosition, cluster, onDirectionRequest } = this.props
 		const iconURL = cluster.transports.length > 1 ? cluster.agency.iconsURL[cluster.type] : cluster.transports[0].iconURL

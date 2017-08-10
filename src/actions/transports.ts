@@ -2,7 +2,7 @@ import { Dispatch } from 'react-redux'
 
 import { Transport, TransportType, Position } from '../models'
 import { RootState } from '../reducers/configureStore'
-import { toggleMap } from '.'
+import { toggleMap, getRoute } from '.'
 
 // TYPES
 export const REQUEST_TRANSPORTS    = "REQUEST_TRANSPORTS"
@@ -109,9 +109,12 @@ export function selectTransport(transportID: string) {
 		if (!getState().drawers.mapIsOpen) {
 			dispatch(toggleMap())
 		}
+		const { transports, userPosition } = getState()
+		const transport = transports.items[transportID]
+		// dispatch(getRoute(userPosition, transport.position))
 		dispatch({
 			type     : SELECT_TRANSPORT,
-			transport: getState().transports.items[transportID],
+			transport: transport,
 		})
 	}
 }
