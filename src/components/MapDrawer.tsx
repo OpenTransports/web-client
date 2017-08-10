@@ -54,13 +54,13 @@ export function MapDrawer(props: MapDrawerProps) {
 			width={"95%"}
 			onRequestChange={toggleOpen}
 		>
-			<TransportsMap
+			{mapIsOpen && <TransportsMap
 				clusters={clustersOfTransports}
 				userPosition={userPosition}
 				route={route}
 				selectedTransport={selectedTransport}
 				onDirectionRequest={onDirectionRequest}
-			/>
+			/>}
 		</Drawer>
 	)
 }

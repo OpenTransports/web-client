@@ -8,6 +8,7 @@ import Drawer   from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import Toggle   from 'material-ui/Toggle'
 import Slider   from 'material-ui/Slider'
+import { pink500, pink100 } from 'material-ui/styles/colors'
 
 import { AgenciesState, TransportsState } from '../reducers'
 import { TransportType } from '../models'
@@ -58,6 +59,8 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 										label={agencies.items[agencyID].typesString[i]}
 										defaultToggled={agencies.activatedTypes.indexOf(agencyID+String(typeID)) != -1}
 										onToggle={() => onTypeToggle(agencyID, typeID)}
+										thumbSwitchedStyle={{backgroundColor: pink500}}
+										trackSwitchedStyle={{backgroundColor: pink100}}
 									/>
 								</ListItem>
 							)}
@@ -66,12 +69,14 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 								label={agencies.items[agencyID].name}
 								defaultToggled={agencies.activated.indexOf(agencyID) != -1}
 								onToggle={() => onAgencyToggle(agencyID)}
+								thumbSwitchedStyle={{backgroundColor: pink500}}
+								trackSwitchedStyle={{backgroundColor: pink100}}
 							/>
 						</ListItem>
 					)}
 				</List>
-				<div style={{margin: '0px 25px'}}>
-					Radius: <b>{this.state.radius}</b> meters
+				<div className={'radius-slider-container'}>
+					Radius: <b>{this.state.radius} m</b>
 					<Slider
 						min={20}
 						max={2000}

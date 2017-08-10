@@ -28,6 +28,10 @@ class AsyncApp extends React.Component<RootState, any> {
 		super(props)
 	}
 
+	componentDidMount() {
+		this.props.dispatch(watchPosition())
+	}
+
 	render()  {
 		const { dispatch, agencies, transports, routes, userPosition, radius, drawers } = this.props
 
@@ -98,16 +102,6 @@ class AsyncApp extends React.Component<RootState, any> {
 					toggleOpen        = {() => dispatch(toggleMap())}
 					onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}
 				/>
-
-
-				{userPosition.latitude === 0 && userPosition.latitude === 0 &&
-					<RaisedButton
-						onClick={() => dispatch(watchPosition())}
-						label="OpenTransports needs your location"
-						secondary={true}
-						icon={<LocationOnIcon/>}
-					/>
-				}
 
 				{userPosition.latitude !== 0 && userPosition.latitude !== 0 &&
 					<TransportsList

@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton'
 import NavigationRefreshIcon from 'material-ui/svg-icons/navigation/refresh'
 import LinearProgress from 'material-ui/LinearProgress'
 import MapIcon from 'material-ui/svg-icons/maps/map'
-import { blueA700 } from 'material-ui/styles/colors'
+import { pink500 } from 'material-ui/styles/colors'
 
 
 type HeaderProps = {
@@ -19,7 +19,7 @@ export function Header(props: HeaderProps) {
 	return (
 		<header>
 			<AppBar
-				style={{flexShrink: 0, backgroundColor: blueA700}}
+				style={{flexShrink: 0}}
 				title="OpenTransport"
 				iconElementRight={
 					<div >
@@ -36,7 +36,7 @@ export function Header(props: HeaderProps) {
 					</div>}
 				onLeftIconButtonTouchTap={props.toggleMenu}
 			/>
-			{props.isFetching && <LinearProgress style={{flexShrink: 0}}/>}
+			{props.isFetching && <LinearProgress color={pink500} style={{flexShrink: 0}}/>}
 		</header>
 	)
 }

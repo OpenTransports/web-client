@@ -44,13 +44,13 @@ export default class Transports extends React.Component<TransportsProps, any> {
 					<span
 						className="transport-distance"
 						style={{color: grey500}}
+						onClick={() => onDirectionRequest(transport.ID)}
 					>
+						{transport.position.distanceFrom(userPosition)} m
 						<DirectionIcon
-							onClick={() => onDirectionRequest(transport.ID)}
-							style={{width: 16, height: 16, marginRight: 5}}
+							style={{width: 16, height: 16, marginLeft: 5}}
 							color={grey500}
 						/>
-						{transport.position.distanceFrom(userPosition)} m
 					</span>
 				</div>
 
