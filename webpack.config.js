@@ -15,7 +15,7 @@ config = {
 	entry  : "./containers/Root.tsx",
 	output : {
 		path    : path.resolve(__dirname, "dist"),
-		filename: "[name].js",
+		filename: "[name].[hash].js",
 	},
 	resolve: {
 		extensions : [".js", ".ts", ".json", ".tsx", ".css", "less"],

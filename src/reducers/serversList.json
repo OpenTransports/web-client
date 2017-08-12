@@ -1,7 +1,16 @@
 [
 	{
 		"ID": "France.Paris",
-		"URL": "https://artonge.duckdns.org/opentransports",
+		"URL": "https://artonge.duckdns.org/opentransports-paris",
+		"radius": 20000,
+		"center": {
+			"latitude":  48.856,
+			"longitude": 2.35
+		}
+	},
+	{
+		"ID": "WorldWide.Bikes",
+		"URL": "https://artonge.duckdns.org/opentransports-bikes",
 		"radius": 20000,
 		"center": {
 			"latitude":  48.856,
