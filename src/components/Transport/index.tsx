@@ -80,11 +80,15 @@ export default class Transports extends React.Component<TransportsProps, any> {
 					<div className="transport-count-container">
 						<div className="transport-count">
 							<div className="transport-count-label">Available</div>
-							<div className="transport-count-number">{transport.available}</div>
+							<div className={`transport-count-number transport-count-number-${transport.available > 3 ? 'ok' : 'warning'}`}>
+								{transport.available}
+							</div>
 						</div>
 						<div className="transport-count">
 							<div className="transport-count-label">Empty spots</div>
-							<div className="transport-count-number">{transport.empty}</div>
+							<div className={`transport-count-number transport-count-number-${transport.empty > 2 ? 'ok' : 'warning'}`}>
+								{transport.empty}
+							</div>
 						</div>
 					</div>
 				}

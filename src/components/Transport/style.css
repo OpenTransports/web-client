@@ -23,13 +23,13 @@
 }
 
 .transport-name {
-	display: flex;
-	align-items: center;
+	align-self: center;
 	flex-grow: 1;
 	margin-left: 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	height: 18px;
 	font-weight: bold;
 }
 
@@ -107,7 +107,15 @@
 }
 
 .transport-count-container .transport-count-number {
-	color: rgb(0, 200, 83);
+	font-weight: bold;
+}
+
+.transport-count-container .transport-count-number-ok {
+	color: #00C853;
+}
+
+.transport-count-container .transport-count-number-warning {
+	color: #EF9A9A;
 }
 
 
