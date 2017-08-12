@@ -71,22 +71,17 @@ export function fetchTransports() {
 	return async (dispatch: Dispatch<{}>, getState: () => RootState) => {
 		const prevState = getState()
 		const { userPosition, radius, servers } = prevState
-		// Don't fetch if allready fetching
-		if (prevState.transports.isFetching) return
-
-		dispatch(requestTransports())
 
 		// For each server covering the user position, fetch the transports
-		let promises = []
-		let nearServers = Object.keys(servers.items)
+		Object.keys(servers.items)
 			.map(serverID => servers.items[serverID])
 			.filter(server => server.center.distanceFrom(userPosition) <= server.radius)
-			.map(server => server.URL)
-		for (let serverURL of nearServers) {
-			const response = await fetch(`${serverURL}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
-			const transports = (await response.json()).map((rawTransport: any) => new Transport(rawTransport))
-			dispatch(receiveTransports(transports, userPosition, radius))
-		}
+			.map(server => new Promise(async () => {
+				dispatch(requestTransports())
+				const response = await fetch(`${server.URL}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
+				const transports = (await response.json()).map((rawTransport: any) => new Transport(rawTransport))
+				dispatch(receiveTransports(transports, userPosition, radius))
+			}))
 	}
 }
 

@@ -80,21 +80,17 @@ export function fetchAgencies() {
 		const prevState = getState()
 		const { userPosition, radius, servers } = prevState
 
-		// Don't fetch if allready fetching
-		if (prevState.agencies.isFetching) return
-
-		dispatch(requestAgencies())
-
 		// For each server covering the user position, fetch the agencies
-		let promises = []
-		let nearServers = Object.keys(servers.items)
+		Object.keys(servers.items)
 			.map(serverID => servers.items[serverID])
-			.filter(server => server.center.distanceFrom(userPosition) <= server.radius)
+			.filter(server => server.radius === -1 || server.center.distanceFrom(userPosition) <= server.radius)
 			.map(server => server)
-		for (let server of nearServers) {
-			const response = await fetch(`${server.URL}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
-			const agencies = (await response.json()).map((rawAgency: any) => new Agency(rawAgency, server.ID))
-			dispatch(receiveAgencies(agencies, userPosition, radius))
-		}
+			.map((server) => new Promise(async () => {
+					dispatch(requestAgencies())
+					const response = await fetch(`${server.URL}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
+					const agencies = (await response.json()).map((rawAgency: any) => new Agency(rawAgency, server.ID))
+					dispatch(receiveAgencies(agencies, userPosition, radius))
+				})
+			)
 	}
 }

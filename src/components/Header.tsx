@@ -5,14 +5,14 @@ import IconButton from 'material-ui/IconButton'
 import NavigationRefreshIcon from 'material-ui/svg-icons/navigation/refresh'
 import LinearProgress from 'material-ui/LinearProgress'
 import MapIcon from 'material-ui/svg-icons/maps/map'
-import { pink500 } from 'material-ui/styles/colors'
+import { greenA700 } from 'material-ui/styles/colors'
 
 
 type HeaderProps = {
 	toggleMenu: (Event) => void
 	toggleMap : (Event) => void
 	refresh   : (Event) => void
-	isFetching: boolean
+	fetching  : number
 }
 
 export function Header(props: HeaderProps) {
@@ -36,7 +36,8 @@ export function Header(props: HeaderProps) {
 					</div>}
 				onLeftIconButtonTouchTap={props.toggleMenu}
 			/>
-			{props.isFetching && <LinearProgress color={pink500} style={{flexShrink: 0}}/>}
+
+			{props.fetching > 0 && <LinearProgress color={greenA700} style={{flexShrink: 0}}/>}
 		</header>
 	)
 }

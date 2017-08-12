@@ -11,10 +11,10 @@
 	{
 		"ID": "WorldWide.Bikes",
 		"URL": "https://artonge.duckdns.org/opentransports-bikes",
-		"radius": 20000,
+		"radius": -1,
 		"center": {
-			"latitude":  48.856,
-			"longitude": 2.35
+			"latitude":  0,
+			"longitude": 0
 		}
 	}
 ]

@@ -76,7 +76,7 @@ class AsyncApp extends React.Component<RootState, any> {
 			}}>
 
 				<Header
-					isFetching = {agencies.isFetching || transports.isFetching}
+					fetching   = {agencies.fetching + transports.fetching}
 					toggleMenu = {() => this.props.dispatch(toggleMenu())}
 					toggleMap  = {() => this.props.dispatch(toggleMap())}
 					refresh    = {() => {

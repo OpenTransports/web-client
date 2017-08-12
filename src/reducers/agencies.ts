@@ -12,7 +12,7 @@ export type AgenciesState = {
 	items         : Normalized<Agency>
 	activated     : string[]
 	activatedTypes: string[]
-	isFetching    : boolean
+	fetching      : number
 	lastUpdated   : { date: number, position: Position }
 }
 
@@ -22,7 +22,7 @@ const defaultState: AgenciesState = {
 	items         : {},
 	activated     : [] as string[],
 	activatedTypes: [],
-	isFetching    : false,
+	fetching      : 0,
 	lastUpdated   : { date: 0, position: new Position() },
 }
 
@@ -33,7 +33,7 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 	case REQUEST_AGENCIES:
 		return {
 			...state,
-			isFetching: true,
+			fetching: state.fetching + 1,
 		}
 	case RECEIVE_AGENCIES:
 		return {
@@ -51,7 +51,7 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 				.map(agency => agency.types.map(typeID => agency.ID+String(typeID)))
 				.reduce(((allTypes, types) => allTypes.concat(types)), state.activatedTypes),
 			lastUpdated: { date: action.date, position: action.position },
-			isFetching: false,
+			fetching: state.fetching - 1,
 		}
 	case TOGGLE_AGENCY:
 		return {

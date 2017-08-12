@@ -11,7 +11,7 @@ import {
 export type TransportsState = {
 	items      : Normalized<Transport>
 	selected   : Transport | null
-	isFetching : boolean
+	fetching   : number
 	lastUpdated: { date: number, position: Position }
 }
 
@@ -20,7 +20,7 @@ export type TransportsState = {
 const defaultState: TransportsState = {
 	items      : {},
 	selected   : null,
-	isFetching : false,
+	fetching   : 0,
 	lastUpdated: { date: 0, position: new Position() },
 }
 
@@ -31,7 +31,7 @@ export function transports(state = defaultState, action: transportActions): Tran
 	case REQUEST_TRANSPORTS:
 		return {
 			...state,
-			isFetching: true,
+			fetching: state.fetching + 1,
 		}
 	case RECEIVE_TRANSPORTS:
 		return {
@@ -40,7 +40,7 @@ export function transports(state = defaultState, action: transportActions): Tran
 				...state.items,
 				...normalizeArray(action.transports)
 			},
-			isFetching: false,
+			fetching: state.fetching - 1,
 			lastUpdated: { date: action.date, position: action.position },
 		}
 	case SELECT_TRANSPORT:
