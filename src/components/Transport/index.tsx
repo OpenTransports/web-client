@@ -76,7 +76,7 @@ export default class Transports extends React.Component<TransportsProps, any> {
 					</div>
 				)}
 
-				{transport.available &&
+				{transport.available !== null &&
 					<div className="transport-count-container">
 						<div className="transport-count">
 							<div className="transport-count-label">Available</div>

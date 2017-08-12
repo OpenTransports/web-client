@@ -75,7 +75,7 @@ export function fetchTransports() {
 		// For each server covering the user position, fetch the transports
 		Object.keys(servers.items)
 			.map(serverID => servers.items[serverID])
-			.filter(server => server.center.distanceFrom(userPosition) <= server.radius)
+			.filter(server => server.radius === -1 || server.center.distanceFrom(userPosition) <= server.radius)
 			.map(server => new Promise(async () => {
 				dispatch(requestTransports())
 				const response = await fetch(`${server.URL}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
