@@ -1,6 +1,4 @@
-import { Normalized, normalizeArray, toggleItem } from './normalize'
-
-import { Position, Agency } from '../models'
+import { Position, Agency, Normalized, normalizeArray, toggleItem } from '../models'
 
 import {
 	REQUEST_AGENCIES, RECEIVE_AGENCIES,

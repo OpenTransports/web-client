@@ -1,6 +1,4 @@
-import { Normalized, normalizeArray } from './normalize'
-
-import { Position, Transport } from '../models'
+import { Position, Transport, Normalized, normalizeArray } from '../models'
 
 import {
 	REQUEST_TRANSPORTS, RECEIVE_TRANSPORTS,

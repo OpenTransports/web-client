@@ -3,3 +3,4 @@ export * from "./Server"
 export * from "./Agency"
 export * from "./Transport"
 export * from "./Route"
+export * from './normalize'

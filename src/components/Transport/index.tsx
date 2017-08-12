@@ -2,12 +2,13 @@ import * as React from 'react'
 import DirectionIcon from 'material-ui/svg-icons/maps/directions'
 
 import { greenA700, grey500 } from 'material-ui/styles/colors'
-import { Transport, Position } from '../../models'
+import { Agency, Transport, Position } from '../../models'
 import { capitalize } from '../../filters'
 
 import './style.css'
 
 interface TransportsProps {
+	agency            : Agency
 	transport         : Transport
 	userPosition      : Position
 	onDirectionRequest: (transportID: string) => void
@@ -28,8 +29,10 @@ export default class Transports extends React.Component<TransportsProps, any> {
 	}
 
 	render() {
-		const { transport, userPosition, onDirectionRequest } = this.props
+		const { agency, transport, userPosition, onDirectionRequest } = this.props
 		const containerClasses = `transport-container ${this.state.isOpen ? 'transport-container-open':''}`
+		// If the custom one is null, fall back to the generic one
+		const iconURL = transport.iconURL || agency.iconsURL[agency.types.indexOf(transport.type)]
 		return (
 			<div
 				className={containerClasses}
@@ -38,7 +41,7 @@ export default class Transports extends React.Component<TransportsProps, any> {
 				<div className="transport-header">
 					<span
 						className="transport-icon"
-						style={{backgroundImage: `url(${transport.iconURL})`}}
+						style={{backgroundImage: `url(${iconURL})`}}
 					></span>
 					<span className="transport-name">{capitalize(transport.name)}</span>
 					<span
@@ -54,7 +57,7 @@ export default class Transports extends React.Component<TransportsProps, any> {
 					</span>
 				</div>
 
-				{transport.passages.map(p =>
+				{transport.passages && transport.passages.map(p =>
 					<div className="transport-passages-container" key={p.direction}>
 						<div className="transport-passages-direction">{p.direction}</div>
 						<div className="transport-passages-times-container">
@@ -72,6 +75,19 @@ export default class Transports extends React.Component<TransportsProps, any> {
 						</div>
 					</div>
 				)}
+
+				{transport.available &&
+					<div className="transport-count-container">
+						<div className="transport-count">
+							<div className="transport-count-label">Available</div>
+							<div className="transport-count-number">{transport.available}</div>
+						</div>
+						<div className="transport-count">
+							<div className="transport-count-label">Empty spots</div>
+							<div className="transport-count-number">{transport.empty}</div>
+						</div>
+					</div>
+				}
 			</div>
 		)
 	}

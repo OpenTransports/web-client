@@ -83,24 +83,10 @@ export function fetchTransports() {
 			.filter(server => server.center.distanceFrom(userPosition) <= server.radius)
 			.map(server => server.URL)
 		for (let serverURL of nearServers) {
-			promises.push(
-				fetch(`${serverURL}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
-					.then(response => response.json())
-					.then(json => json.map((rawTransport: any) => new Transport(rawTransport)))
-			)
+			const response = await fetch(`${serverURL}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
+			const transports = (await response.json()).map((rawTransport: any) => new Transport(rawTransport))
+			dispatch(receiveTransports(transports, userPosition, radius))
 		}
-
-		// Put all received agency into one array
-		let flattenTransports = [] as Transport[]
-		for (let p of promises) {
-			try {
-				flattenTransports = flattenTransports.concat(await p)
-			} catch (e) {
-				console.error(e)
-			}
-		}
-
-		dispatch(receiveTransports(flattenTransports, userPosition, radius))
 	}
 }
 

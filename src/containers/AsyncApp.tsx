@@ -7,7 +7,7 @@ import LocationOnIcon from 'material-ui/svg-icons/communication/location-on'
 
 import { Header, NavDrawer, MapDrawer, TransportsList } from '../components'
 
-import { Position, Transport } from '../models'
+import { Position, Transport, TransportType } from '../models'
 import { RootState } from '../reducers/configureStore'
 import {
 	fetchTransports, fetchAgencies,
@@ -47,9 +47,13 @@ class AsyncApp extends React.Component<RootState, any> {
 			.filter(transport => transport.position.distanceFrom(userPosition) <= radius)
 			.filter(transport => agencies.activated.indexOf(transport.agencyID) != -1 )
 			.filter(transport => agencies.activatedTypes.indexOf(transport.agencyID+String(transport.type)) != -1 )
-			.filter(transport => transport.passages.length > 0)
+			.filter(transport => transport.passages === null || transport.passages.length > 0)
 			.sort((t1, t2) => t1.position.distanceFrom(userPosition) - t2.position.distanceFrom(userPosition))
 			.reduce(((allTransports, t1) => {
+				if (t1.type == TransportType.Bike || t1.type == TransportType.Car) {
+					allTransports.push(t1)
+					return allTransports
+				}
 				// Get all passages from allTransports for the line of t1
 				const sameLinePassages = allTransports
 					.filter(t2 => t1.line == t2.line)
@@ -105,6 +109,7 @@ class AsyncApp extends React.Component<RootState, any> {
 
 				{userPosition.latitude !== 0 && userPosition.latitude !== 0 &&
 					<TransportsList
+						agencies={agencies.items}
 						transports={visibleTransports}
 						userPosition={userPosition}
 						onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}

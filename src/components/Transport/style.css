@@ -15,13 +15,16 @@
 	flex-shrink: 1;
 	min-width: 30px;
 	max-width: 50px;
-	max-height: 30px;
+	min-height: 25px;
+	max-height: 50px;
 	background-size: contain;
 	background-repeat: no-repeat;
-	background-position: top;
+	background-position: center;
 }
 
 .transport-name {
+	display: flex;
+	align-items: center;
 	flex-grow: 1;
 	margin-left: 10px;
 	overflow: hidden;
@@ -57,7 +60,7 @@
 }
 
 
-/* Times */
+/* Passages */
 .transport-passages-times-container {
 	display: flex;
 	flex-shrink: 0;
@@ -88,6 +91,23 @@
 
 .transport-passages-time:first-child::before {
 	display: none;
+}
+
+
+/* Count */
+.transport-count-container .transport-count {
+	display: flex;
+	flex-direction: row;
+	padding-top: 8px;
+	padding-left: 15px;
+}
+
+.transport-count-container .transport-count-label {
+	flex-grow: 1;
+}
+
+.transport-count-container .transport-count-number {
+	color: rgb(0, 200, 83);
 }
 
 

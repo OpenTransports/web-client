@@ -1,5 +1,4 @@
-import { Route } from '../models'
-import { Normalized } from './'
+import { Route, Normalized } from '../models'
 import {
 	RECEIVE_ROUTE, DISPLAY_ROUTE,
 	routesActions

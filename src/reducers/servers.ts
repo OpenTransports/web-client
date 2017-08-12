@@ -1,6 +1,4 @@
-import { Normalized, normalizeArray, toggleItem } from './normalize'
-
-import { Position, Server } from '../models'
+import { Position, Server, Normalized, normalizeArray, toggleItem } from '../models'
 
 import { TOGGLE_SERVER, serversActions, UPDATE_RADIUS, radiusActions } from '../actions'
 

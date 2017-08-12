@@ -77,12 +77,12 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 
 				{selectedTransport && route &&
 					<AntPath
-					positions={route.points.map((position) => {
-						return {
-							lat: position.latitude,
-							lng: position.longitude,
-						}
-					})}
+						positions={route.points.map((position) => {
+							return {
+								lat: position.latitude,
+								lng: position.longitude,
+							}
+						})}
 					/>
 				}
 			</Map>

@@ -1,26 +1,28 @@
 import { Position, Agency } from '.'
 
 export class Transport {
-	ID       : string
-	agencyID : string
-	name     : string
-	type     : TransportType
-	position : Position
-	iconURL  : string
-	line     : string
-	passages?: Passage[]
-	count?   : number
+	ID        : string
+	agencyID  : string
+	name      : string
+	type      : TransportType
+	position  : Position
+	iconURL   : string
+	line      : string
+	passages? : Passage[]
+	available?: number
+	empty?    : number
 
 	constructor(rawTransport: any) {
-		this.ID       = rawTransport.ID
-		this.agencyID = rawTransport.agencyID
-		this.name     = rawTransport.name
-		this.type     = rawTransport.type
-		this.position = new Position(rawTransport.position)
-		this.iconURL  = rawTransport.iconURL
-		this.line     = rawTransport.line
-		this.passages = rawTransport.passages
-		this.count    = rawTransport.count
+		this.ID        = rawTransport.ID
+		this.agencyID  = rawTransport.agencyID
+		this.name      = rawTransport.name
+		this.type      = rawTransport.type
+		this.position  = new Position(rawTransport.position)
+		this.iconURL   = rawTransport.iconURL
+		this.line      = rawTransport.line
+		this.passages  = rawTransport.passages
+		this.available = rawTransport.available
+		this.empty     = rawTransport.empty
 	}
 }
 
@@ -37,7 +39,11 @@ export enum TransportType {
 	Rail,
 	Bus,
 	Ferry,
+	Cable,
+	Gondola,
+	Funicular,
 	Bike,
+	Car,
 	Unknown,
 }
 

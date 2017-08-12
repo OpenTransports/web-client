@@ -4,18 +4,19 @@ import { List, ListItem } from 'material-ui/List'
 import Paper from 'material-ui/Paper'
 import { grey100 } from 'material-ui/styles/colors'
 
-import { Position, Transport } from '../models'
+import { Position, Transport, Agency, Normalized } from '../models'
 import TransportComp from './Transport'
 
 
 interface TransportsListProps {
+	agencies          : Normalized<Agency>
 	transports        : Transport[]
 	userPosition      : Position
 	onDirectionRequest: (transportID: string) => void
 }
 
 export function TransportsList(props: TransportsListProps) {
-	const { transports, userPosition, onDirectionRequest } = props
+	const { agencies, transports, userPosition, onDirectionRequest } = props
 
 	return (
 		<List style={{
@@ -30,6 +31,7 @@ export function TransportsList(props: TransportsListProps) {
 						<Paper style={{backgroundColor: 'white'}}>
 							<TransportComp
 								transport={transport}
+								agency={agencies[transport.agencyID]}
 								userPosition={userPosition}
 								onDirectionRequest={onDirectionRequest}
 							/>

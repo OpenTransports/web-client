@@ -22,7 +22,11 @@ export default class TransportsClusterMarker extends MapComponent<TransportsClus
 
 	render() {
 		const { userPosition, cluster, onDirectionRequest } = this.props
-		const iconURL = cluster.transports.length > 1 ? cluster.agency.iconsURL[cluster.type] : cluster.transports[0].iconURL
+		const genericIcon = cluster.agency.iconsURL[cluster.agency.types.indexOf(cluster.type)]
+		// If the custom one is null, fall back to the generic one
+		const customIcon = cluster.transports[0].iconURL || genericIcon
+		// If cluster has more than one transports, take the generic icon, else the custom one
+		var iconURL = cluster.transports.length > 1 ? genericIcon : customIcon
 		return (
 			<Marker
 				position={{lat: cluster.position.latitude, lng: cluster.position.longitude}}
@@ -41,10 +45,11 @@ export default class TransportsClusterMarker extends MapComponent<TransportsClus
 				>
 					<MuiThemeProvider>
 						<div>
-							{cluster.transports.map(t =>
+							{cluster.transports.map(transport =>
 								<TransportComp
-									key={t.ID}
-									transport={t}
+									key={transport.ID}
+									transport={transport}
+									agency={cluster.agency}
 									userPosition={userPosition}
 									onDirectionRequest={onDirectionRequest}
 								/>

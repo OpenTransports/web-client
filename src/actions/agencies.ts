@@ -92,23 +92,9 @@ export function fetchAgencies() {
 			.filter(server => server.center.distanceFrom(userPosition) <= server.radius)
 			.map(server => server)
 		for (let server of nearServers) {
-			promises.push(
-				fetch(`${server.URL}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
-					.then(response => response.json())
-					.then(json => json.map((rawAgency: any) => new Agency(rawAgency, server.ID)))
-			)
+			const response = await fetch(`${server.URL}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
+			const agencies = (await response.json()).map((rawAgency: any) => new Agency(rawAgency, server.ID))
+			dispatch(receiveAgencies(agencies, userPosition, radius))
 		}
-
-		// Put all received agencies into one array
-		let flattenAgencies = [] as Agency[]
-		for (let p of promises) {
-			try {
-				flattenAgencies = flattenAgencies.concat(await p)
-			} catch (e) {
-				console.error(e)
-			}
-		}
-
-		dispatch(receiveAgencies(flattenAgencies, userPosition, radius))
 	}
 }

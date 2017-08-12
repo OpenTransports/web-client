@@ -2,8 +2,7 @@ import * as React from 'react'
 import { connect, Dispatch } from 'react-redux'
 import Drawer from 'material-ui/Drawer'
 
-import { Normalized } from '../reducers/normalize'
-import { Position, Transport, Agency, Server, TransportsCluster, Route } from '../models'
+import { Position, Transport, Agency, Server, TransportsCluster, Route, Normalized } from '../models'
 import TransportsMap from './Map'
 
 

@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import TransportComp from './index'
-import { Position, Transport } from '../../models'
+import { Position, Transport, Agency } from '../../models'
 
 const transport = new Transport({
 	ID      : "transport-ID",
@@ -17,6 +17,12 @@ const transport = new Transport({
 	passages: []
 })
 
+const agency = new Agency({
+	ID        : "agency-ID",
+	name      : "agency-name",
+	types     : [0],
+	typesIcons: ["type-icon"],
+}, "server-url")
 
 describe('Transport', () => {
 
@@ -24,6 +30,7 @@ describe('Transport', () => {
 		ReactDOM.render(
 			<MuiThemeProvider>
 				<TransportComp
+					agency={agency}
 					transport={transport}
 					userPosition={new Position()}
 					onDirectionRequest={(transportID) => null}

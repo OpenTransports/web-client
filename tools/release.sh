@@ -16,6 +16,7 @@ cp dist/* opentransports.github.io
 
 cd opentransports.github.io
 
+git add .
 git status -s
 git commit -am "$(date +'%d/%m/%Y %H:%M') - $1"
 git push
