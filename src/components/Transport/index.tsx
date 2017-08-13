@@ -71,12 +71,13 @@ export default class Transports extends React.Component<TransportsProps, any> {
 									>
 										{t}
 									</div>
-								)}
+								)
+							}
 						</div>
 					</div>
 				)}
 
-				{transport.available !== null &&
+				{transport.available !== undefined &&
 					<div className="transport-count-container">
 						<div className="transport-count">
 							<div className="transport-count-label">Available</div>
