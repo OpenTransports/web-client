@@ -51,19 +51,22 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 					{Object.keys(agencies.items).map(agencyID =>
 						<ListItem
 							key={agencyID}
-							nestedItems={agencies.items[agencyID].types.map((typeID, i) =>
-								<ListItem
-									key={typeID}
-									style={{height: 40}}>
-									<Toggle
-										label={agencies.items[agencyID].typesString[i]}
-										defaultToggled={agencies.activatedTypes.indexOf(agencyID+String(typeID)) != -1}
-										onToggle={() => onTypeToggle(agencyID, typeID)}
-										thumbSwitchedStyle={{backgroundColor: greenA700}}
-										trackSwitchedStyle={{backgroundColor: green100}}
-									/>
-								</ListItem>
-							)}
+							nestedItems={agencies.items[agencyID].types.length > 1 &&
+								agencies.items[agencyID].types.map((typeID, i) =>
+									<ListItem
+										key={typeID}
+										style={{height: 40}}>
+										<Toggle
+											label={agencies.items[agencyID].typesString[i]}
+											defaultToggled={agencies.activatedTypes.indexOf(agencyID+String(typeID)) != -1}
+											onToggle={() => onTypeToggle(agencyID, typeID)}
+											thumbSwitchedStyle={{backgroundColor: greenA700}}
+											trackSwitchedStyle={{backgroundColor: green100}}
+											disabled={agencies.activated.indexOf(agencyID) == -1}
+										/>
+									</ListItem>
+								)
+							}
 						>
 							<Toggle
 								label={agencies.items[agencyID].name}
