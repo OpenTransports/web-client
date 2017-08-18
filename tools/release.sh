@@ -2,6 +2,7 @@
 set -x
 
 export production=true
+export version=$1
 
 if [ ! -d opentransports.github.io ]
 then
@@ -18,7 +19,8 @@ cd opentransports.github.io
 
 git add .
 git status -s
-git commit -am "$(date +'%d/%m/%Y %H:%M') - $1"
+git commit -am "$version - $(date +'%d/%m/%Y %H:%M')"
+git tag $version
 git push
 
 cd ../

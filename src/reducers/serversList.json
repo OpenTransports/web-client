@@ -1,7 +1,8 @@
 [
 	{
-		"ID": "France.Paris",
+		"ID": "France.Paris.RATP",
 		"URL": "https://artonge.duckdns.org/opentransports-paris",
+		"git": "https://github.com/OpenTransports/Paris",
 		"radius": 20000,
 		"center": {
 			"latitude":  48.856,
@@ -10,6 +11,17 @@
 	},
 	{
 		"ID": "WorldWide.Bikes",
+		"URL": "https://artonge.duckdns.org/opentransports-bikes",
+		"git": "https://github.com/OpenTransports/Bikes",
+		"radius": -1,
+		"center": {
+			"latitude":  0,
+			"longitude": 0
+		}
+	},
+	{
+		"ID": "Finlande.Helsinki.HSL",
+		"git": "https://github.com/OpenTransports/Helsinki",
 		"URL": "https://artonge.duckdns.org/opentransports-bikes",
 		"radius": -1,
 		"center": {
