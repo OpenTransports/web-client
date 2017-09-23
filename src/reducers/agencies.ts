@@ -38,17 +38,29 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 	case RECEIVE_AGENCIES:
 		return {
 			...state,
+			// All agencies accessible through their ID
 			items: {
 				...state.items,
 				...normalizeArray(action.agencies),
 			},
+			// Array of ID of activated agencies
+			// 1. Keep only the new agencies
+			// 2. Get their ID
+			// 3. Add their ID to the list
+			// ==> All new agencies are activated by default
 			activated: action.agencies
 				.filter(agency => state.items[agency.ID] == undefined)
 				.map(agency => agency.ID)
 				.concat(state.activated),
+			// Array of ID of activated types
+			// 1. Keep only new agencies
+			// 2. Get an Array of all the type for all the agencies
+			// 3. Merge those Arrays
+			// ==> All types of new agencies are activated by default
+			// ==> A type ID is agencyID+typeID
 			activatedTypes: action.agencies
 				.filter(agency => state.items[agency.ID] == undefined)
-				.map(agency => agency.types.map(typeID => agency.ID+String(typeID)))
+				.map(agency => Object.keys(agency.types).map(typeID => agency.ID+typeID))
 				.reduce(((allTypes, types) => allTypes.concat(types)), state.activatedTypes),
 			lastUpdated: { date: action.date, position: action.position },
 			fetching: state.fetching - 1,

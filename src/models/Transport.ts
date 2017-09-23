@@ -1,35 +1,33 @@
 import { Position, Agency } from '.'
 
 export class Transport {
-	ID        : string
-	agencyID  : string
-	name      : string
-	type      : TransportType
-	position  : Position
-	iconURL   : string
-	line      : string
-	passages? : Passage[]
-	available?: number
-	empty?    : number
+	ID          : string
+	agencyID    : string
+	name        : string
+	type        : TransportType
+	position    : Position
+	iconURL     : string
+	line        : string
+	informations: Information[]
 
 	constructor(rawTransport: any) {
-		this.ID        = rawTransport.ID
-		this.agencyID  = rawTransport.agencyID
-		this.name      = rawTransport.name
-		this.type      = rawTransport.type
-		this.position  = new Position(rawTransport.position)
-		this.iconURL   = rawTransport.iconURL
-		this.line      = rawTransport.line
-		this.passages  = rawTransport.passages
-		this.available = rawTransport.available
-		this.empty     = rawTransport.empty
+		this.ID           = rawTransport.id
+		this.agencyID     = rawTransport.agencyID
+		this.name         = rawTransport.name
+		this.type         = rawTransport.type
+		this.position     = new Position(rawTransport.position)
+		this.iconURL      = rawTransport.iconURL
+		this.line         = rawTransport.line
+		this.informations = rawTransport.informations
 	}
 }
 
 
-type Passage = {
-	direction: string
-	times: string[]
+type Information = {
+	title     : string
+	content   : string[]
+	warn?     : boolean
+	timestamp?: number
 }
 
 
@@ -47,6 +45,20 @@ export enum TransportType {
 	Unknown,
 }
 
+
+export const TransportTypeDefaultName = {
+	[TransportType.Tram]     : "Tram",
+	[TransportType.Metro]    : "Metro",
+	[TransportType.Rail]     : "Rail",
+	[TransportType.Bus]      : "Bus",
+	[TransportType.Ferry]    : "Ferry",
+	[TransportType.Cable]    : "Cable",
+	[TransportType.Gondola]  : "Gondola",
+	[TransportType.Funicular]: "Funicular",
+	[TransportType.Bike]     : "Bike",
+	[TransportType.Car]      : "Car",
+	[TransportType.Unknown]  : "Unknown",
+}
 
 export class TransportsCluster {
 	agency    : Agency

@@ -47,20 +47,20 @@ class AsyncApp extends React.Component<RootState, any> {
 			.filter(transport => transport.position.distanceFrom(userPosition) <= radius)
 			.filter(transport => agencies.activated.indexOf(transport.agencyID) != -1 )
 			.filter(transport => agencies.activatedTypes.indexOf(transport.agencyID+String(transport.type)) != -1 )
-			.filter(transport => transport.passages === null || transport.passages.length > 0)
+			.filter(transport => transport.informations && transport.informations.length > 0)
 			.sort((t1, t2) => t1.position.distanceFrom(userPosition) - t2.position.distanceFrom(userPosition))
 			.reduce(((allTransports, t1) => {
-				if (t1.type == TransportType.Bike || t1.type == TransportType.Car) {
+				if (t1.type === TransportType.Bike || t1.type === TransportType.Car) {
 					allTransports.push(t1)
 					return allTransports
 				}
 				// Get all passages from allTransports for the line of t1
-				const sameLinePassages = allTransports
+				const sameLineInformations = allTransports
 					.filter(t2 => t1.line == t2.line)
-					.reduce(((passages, t2) => passages.concat(t2.passages)), [])
+					.reduce(((informations, t2) => informations.concat(t2.informations)), [])
 				// Get unique passage in t1
-				const uniquesPassages = t1.passages
-					.filter(p1 => sameLinePassages.find(p2 => p1.direction == p2.direction) == undefined)
+				const uniquesPassages = t1.informations
+					.filter(info1 => sameLineInformations.find(info2 => info1.title == info2.title) == undefined)
 				// If t1 contains uniques passages, add it to allTransports
 				if (uniquesPassages.length > 0) {
 					allTransports.push(t1)

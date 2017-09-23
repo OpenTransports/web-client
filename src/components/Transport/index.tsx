@@ -32,7 +32,7 @@ export default class Transports extends React.Component<TransportsProps, any> {
 		const { agency, transport, userPosition, onDirectionRequest } = this.props
 		const containerClasses = `transport-container ${this.state.isOpen ? 'transport-container-open':''}`
 		// If the custom one is null, fall back to the generic one
-		const iconURL = transport.iconURL || agency.iconsURL[agency.types.indexOf(transport.type)]
+		const iconURL: string = transport.iconURL || agency.types[transport.type].icon
 		return (
 			<div
 				className={containerClasses}
@@ -57,42 +57,28 @@ export default class Transports extends React.Component<TransportsProps, any> {
 					</span>
 				</div>
 
-				{transport.passages && transport.passages.map(p =>
-					<div className="transport-passages-container" key={p.direction}>
-						<div className="transport-passages-direction">{p.direction}</div>
-						<div className="transport-passages-times-container">
-							{p.times
-								.filter((t, i)=> this.state.isOpen || i < 1)
-								.map((t, i) =>
+				{transport.informations && transport.informations.map(info =>
+					<div className="transport-informations-container" key={info.title}>
+						<div className="transport-informations-title">{info.title}</div>
+						<div className="transport-informations-times-container">
+							{info.content
+								.filter((content, i)=> this.state.isOpen || i < 1)
+								.map((content, i) =>
 									<div
-										style={{color: greenA700}}
-										className="transport-passages-time"
+										className={`
+											transport-informations-time
+											${info.timestamp ? 'transport-informations-real-time' : ''}
+											${info.warn ? 'transport-informations-warning' : ''}
+										`}
 										key={i}
 									>
-										{t}
+										{content}
 									</div>
 								)
 							}
 						</div>
 					</div>
 				)}
-
-				{transport.available !== undefined &&
-					<div className="transport-count-container">
-						<div className="transport-count">
-							<div className="transport-count-label">Available</div>
-							<div className={`transport-count-number transport-count-number-${transport.available > 3 ? 'ok' : 'warning'}`}>
-								{transport.available}
-							</div>
-						</div>
-						<div className="transport-count">
-							<div className="transport-count-label">Empty spots</div>
-							<div className={`transport-count-number transport-count-number-${transport.empty > 2 ? 'ok' : 'warning'}`}>
-								{transport.empty}
-							</div>
-						</div>
-					</div>
-				}
 			</div>
 		)
 	}

@@ -28,7 +28,7 @@ export type toggleAgencyAction = {
 type toggleTypeAction = {
 	type    : 'TOGGLE_TYPE'
 	agencyID: string
-	typeID  : TransportType
+	typeID  : string
 }
 
 export type agenciesActions =
@@ -62,7 +62,7 @@ export function toggleAgency(agencyID: string): toggleAgencyAction {
 	}
 }
 
-export function toggleType(agencyID: string, typeID: TransportType): toggleTypeAction {
+export function toggleType(agencyID: string, typeID: string): toggleTypeAction {
 	return {
 		type: TOGGLE_TYPE,
 		agencyID,

@@ -6,7 +6,7 @@
   "main": "server.js",
   "license": "GPL-3.0",
   "engines": {
-    "node": "8.1.2"
+    "node": "^8.1.2"
   },
   "scripts": {
     "postinstall": "yarn build",

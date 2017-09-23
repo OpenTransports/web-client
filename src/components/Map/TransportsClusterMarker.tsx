@@ -22,7 +22,7 @@ export default class TransportsClusterMarker extends MapComponent<TransportsClus
 
 	render() {
 		const { userPosition, cluster, onDirectionRequest } = this.props
-		const genericIcon = cluster.agency.iconsURL[cluster.agency.types.indexOf(cluster.type)]
+		const genericIcon = cluster.agency.types[cluster.type].icon
 		// If the custom one is null, fall back to the generic one
 		const customIcon = cluster.transports[0].iconURL || genericIcon
 		// If cluster has more than one transports, take the generic icon, else the custom one
@@ -30,7 +30,7 @@ export default class TransportsClusterMarker extends MapComponent<TransportsClus
 		return (
 			<Marker
 				position={{lat: cluster.position.latitude, lng: cluster.position.longitude}}
-				alt={cluster.agency.typesString[cluster.agency.types.indexOf(cluster.type)]}
+				alt={cluster.agency.types[cluster.type].name}
 				icon={Leaflet.icon({
 					iconUrl  : iconURL,
 					iconSize : [30, 30],

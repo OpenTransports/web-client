@@ -12,11 +12,10 @@
 }
 
 .transport-icon {
+	align-self: center;
 	flex-shrink: 1;
-	min-width: 30px;
-	max-width: 50px;
-	min-height: 25px;
-	max-height: 50px;
+	width: 30px;
+	height: 25px;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -29,7 +28,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	height: 18px;
+	min-height: 18px; /* The text is cropped without that*/
 	font-weight: bold;
 }
 
@@ -41,8 +40,8 @@
 }
 
 
-/* Passages */
-.transport-passages-container {
+/* Informations */
+.transport-informations-container {
 	min-height: 18px;
 	padding-top: 8px;
 	padding-left: 15px;
@@ -50,7 +49,7 @@
 	flex-direction: row;
 }
 
-.transport-passages-direction {
+.transport-informations-title {
 	flex-grow: 1;
 	padding-right: 10px;
 	flex-shrink: 1;
@@ -59,16 +58,14 @@
 	white-space: nowrap;
 }
 
-
-/* Passages */
-.transport-passages-times-container {
+.transport-informations-times-container {
 	display: flex;
 	flex-shrink: 0;
 	overflow: hidden;
 	max-width: 35%;
 }
 
-.transport-passages-time {
+.transport-informations-time {
 	max-width: 100%;
 	margin-left: 10px;
 	flex-shrink: 0;
@@ -78,19 +75,27 @@
 	font-weight: bold;
 }
 
-.transport-passages-time::before {
+.transport-informations-time::before {
 	margin-right: 10px;
 	content: '-';
 	color: #9E9E9E;
 }
 
-.transport-passages-time:first-child {
+.transport-informations-time:first-child {
 	flex-shrink: 0;
 	margin-left: 0;
 }
 
-.transport-passages-time:first-child::before {
+.transport-informations-time:first-child::before {
 	display: none;
+}
+
+.transport-informations-real-time {
+	color: #00C853;
+}
+
+.transport-informations-warning {
+	color: #EF9A9A;
 }
 
 
@@ -110,26 +115,21 @@
 	font-weight: bold;
 }
 
-.transport-count-container .transport-count-number-ok {
-	color: #00C853;
-}
 
-.transport-count-container .transport-count-number-warning {
-	color: #EF9A9A;
-}
 
 
 /* Open */
 .transport-container-open .transport-name {
 	white-space: normal;
+	overflow: visible;
 }
 
-.transport-container-open .transport-passages-container {
+.transport-container-open .transport-informations-container {
 	flex-direction: column;
 	padding-top: 15px;
 }
 
-.transport-container-open .transport-passages-times-container {
+.transport-container-open .transport-informations-times-container {
 	max-width: 100%;
 	padding-top: 10px;
 	overflow: auto;
