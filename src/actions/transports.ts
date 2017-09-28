@@ -2,7 +2,7 @@ import { Dispatch } from 'react-redux'
 
 import { Transport, TransportType, Position } from '../models'
 import { RootState } from '../reducers/configureStore'
-import { toggleMap, getRoute } from '.'
+import { toggleMap, getItinerary } from '.'
 
 // TYPES
 export const REQUEST_TRANSPORTS    = "REQUEST_TRANSPORTS"
@@ -92,7 +92,7 @@ export function selectTransport(transportID: string) {
 		}
 		const { transports, userPosition } = getState()
 		const transport = transports.items[transportID]
-		// dispatch(getRoute(userPosition, transport.position))
+		// dispatch(getItinerary(userPosition, transport.position))
 		dispatch({
 			type     : SELECT_TRANSPORT,
 			transport: transport,

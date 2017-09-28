@@ -9,8 +9,8 @@ import TransportComp from '../Transport'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 type TransportsClusterMarkerProp = {
-	cluster     : TransportsCluster
-	userPosition: Position
+	cluster           : TransportsCluster
+	userPosition      : Position
 	onDirectionRequest: (transportID: string) => void
 }
 

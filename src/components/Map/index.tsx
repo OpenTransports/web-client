@@ -4,7 +4,7 @@ import { Map, TileLayer } from 'react-leaflet'
 import AntPath from 'react-leaflet-ant-path'
 import 'leaflet/dist/leaflet.css'
 
-import { Position, Transport, TransportsCluster, Route } from '../../models'
+import { Position, Transport, TransportsCluster, Itinerary } from '../../models'
 import TransportsClusterMarker from './TransportsClusterMarker'
 import UserPositionMarker from './UserPositionMarker'
 
@@ -14,7 +14,7 @@ import './style.css'
 interface TransportsMapProps {
 	clusters          : TransportsCluster[]
 	userPosition      : Position
-	route             : Route
+	itinerary         : Itinerary
 	selectedTransport : Transport
 	onDirectionRequest: (transportID) => void
 }
@@ -49,7 +49,7 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 	// }
 
 	render(){
-		const { userPosition, clusters, selectedTransport, onDirectionRequest, route } = this.props
+		const { userPosition, clusters, selectedTransport, onDirectionRequest, itinerary } = this.props
 
 		return (
 			<Map
@@ -75,9 +75,9 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 					/>
 				)}
 
-				{selectedTransport && route &&
+				{selectedTransport && itinerary &&
 					<AntPath
-						positions={route.points.map((position) => {
+						positions={itinerary.points.map((position) => {
 							return {
 								lat: position.latitude,
 								lng: position.longitude,
