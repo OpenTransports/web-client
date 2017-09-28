@@ -56,7 +56,7 @@ class AsyncApp extends React.Component<RootState, any> {
 				}
 				// Get all passages from allTransports for the line of t1
 				const sameLineInformations = allTransports
-					.filter(t2 => t1.line == t2.line)
+					.filter(t2 => t1.line === t2.line)
 					.reduce(((informations, t2) => informations.concat(t2.informations)), [])
 				// Get unique passage in t1
 				const uniquesPassages = t1.informations
@@ -86,33 +86,34 @@ class AsyncApp extends React.Component<RootState, any> {
 				/>
 
 				<NavDrawer
-					agencies       = {agencies}
-					radius         = {radius}
-					lock           = {drawers.mapIsOpen}
-					isOpen         = {drawers.menuIsOpen}
-					toggleOpen     = {() => dispatch(toggleMenu())}
-					onRadiusChange = {(radius) => dispatch(changeRadius(radius))}
-					onAgencyToggle = {agencyID => dispatch(toggleAgency(agencyID))}
-					onTypeToggle   = {(agencyID, typeID) => dispatch(toggleType(agencyID, typeID))}
+					agencies          = {agencies}
+					visibleTransports = {visibleTransports}
+					radius            = {radius}
+					lock              = {drawers.mapIsOpen}
+					isOpen            = {drawers.menuIsOpen}
+					toggleOpen        = {() => dispatch(toggleMenu())}
+					onRadiusChange    = {radius => dispatch(changeRadius(radius))}
+					onAgencyToggle    = {agencyID => dispatch(toggleAgency(agencyID))}
+					onTypeToggle      = {(agencyID, typeID) => dispatch(toggleType(agencyID, typeID))}
 				/>
 
 				<MapDrawer
-					transports        = {visibleTransports}
-					agencies          = {agencies.items}
-					selectedTransport = {transports.selected}
-					route             = {routes.items[routes.display]}
-					userPosition      = {userPosition}
-					mapIsOpen         = {drawers.mapIsOpen}
-					toggleOpen        = {() => dispatch(toggleMap())}
-					onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}
+					transports         = {visibleTransports}
+					agencies           = {agencies.items}
+					selectedTransport  = {transports.selected}
+					route              = {routes.items[routes.display]}
+					userPosition       = {userPosition}
+					mapIsOpen          = {drawers.mapIsOpen}
+					toggleOpen         = {() => dispatch(toggleMap())}
+					onDirectionRequest = {transportID => dispatch(selectTransport(transportID))}
 				/>
 
-				{userPosition.latitude !== 0 && userPosition.latitude !== 0 &&
+				{userPosition.latitude !== 0 && userPosition.longitude !== 0 &&
 					<TransportsList
-						agencies={agencies.items}
-						transports={visibleTransports}
-						userPosition={userPosition}
-						onDirectionRequest={(transportID) => dispatch(selectTransport(transportID))}
+						agencies           = {agencies.items}
+						transports         = {visibleTransports}
+						userPosition       = {userPosition}
+						onDirectionRequest = {transportID => dispatch(selectTransport(transportID))}
 					/>
 				}
 			</div>

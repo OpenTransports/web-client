@@ -12,17 +12,18 @@ import Divider   from 'material-ui/Divider'
 import { greenA700, green100 } from 'material-ui/styles/colors'
 
 import { AgenciesState, TransportsState } from '../reducers'
-import { TransportType, TransportTypeDefaultName } from '../models'
+import { Transport, TransportTypeDefaultName } from '../models'
 
 export interface NavDrawerProps {
-	agencies      : AgenciesState
-	radius        : number
-	lock          : boolean
-	isOpen        : boolean
-	toggleOpen    : () => void
-	onRadiusChange: (newRadius: number) => void
-	onAgencyToggle: (agencyID: string) => void
-	onTypeToggle  : (agencyID: string, typeID: string) => void
+	agencies         : AgenciesState
+	visibleTransports: Transport[]
+	radius           : number
+	lock             : boolean
+	isOpen           : boolean
+	toggleOpen       : () => void
+	onRadiusChange   : (newRadius: number) => void
+	onAgencyToggle   : (agencyID: string) => void
+	onTypeToggle     : (agencyID: string, typeID: string) => void
 }
 
 
@@ -35,7 +36,7 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 
 	render() {
 		const {
-			agencies,
+			agencies, visibleTransports,
 			onAgencyToggle, onTypeToggle,
 			radius, onRadiusChange,
 			isOpen, lock, toggleOpen } = this.props
@@ -50,6 +51,8 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 			>
 				<List style={{flexGrow: 1}}>
 					{Object.keys(agencies.items).map(agencyID =>
+						// Only display agencies that have some transports visible
+						{//visibleTransports.filter(transport => transport.agencyID === agencyID).length > 0 &&
 						<ListItem
 							key={agencyID}
 							primaryText={agencies.items[agencyID].name}
@@ -80,7 +83,7 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 								/> : undefined
 							}
 						>
-						</ListItem>
+						</ListItem>}
 					)}
 				</List>
 				<div className={'radius-slider-container'}>
