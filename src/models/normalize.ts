@@ -1,14 +1,20 @@
 export type Normalized<T> = { [name: string]: T}
-type IDable = { ID: string }
+type IDable = { id: string }
 
 export function filterItems<T extends IDable>(items: Normalized<T>, fn: (T) => boolean): string[] {
-	return Object.keys(items).filter(itemID => fn(items[itemID]) )
+	return Object.keys(items).filter(itemID => fn(items[itemID]))
+}
+
+
+export function mapItems<T extends IDable>(items: Normalized<T>, fn: (T) => T): Normalized<T> {
+	Object.keys(items).forEach(itemID => items[itemID] = fn(items[itemID]))
+	return items
 }
 
 
 export function normalizeArray<T extends IDable>(array: T[]): Normalized<T> {
 	return array.reduce(((itemByID, item)=> {
-		itemByID[item.ID] = item
+		itemByID[item.id] = item
 		return itemByID
 	}), {})
 }

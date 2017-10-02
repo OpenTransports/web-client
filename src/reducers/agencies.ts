@@ -1,4 +1,6 @@
-import { Position, Agency, Normalized, normalizeArray, toggleItem } from '../models'
+import { REHYDRATE } from 'redux-persist/constants'
+
+import { Position, Agency, Normalized, normalizeArray, toggleItem, mapItems } from '../models'
 
 import {
 	REQUEST_AGENCIES, RECEIVE_AGENCIES,
@@ -49,8 +51,8 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 			// 3. Add their ID to the list
 			// ==> All new agencies are activated by default
 			activated: action.agencies
-				.filter(agency => state.items[agency.ID] == undefined)
-				.map(agency => agency.ID)
+				.filter(agency => state.items[agency.id] == undefined)
+				.map(agency => agency.id)
 				.concat(state.activated),
 			// Array of ID of activated types
 			// 1. Keep only new agencies
@@ -59,8 +61,8 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 			// ==> All types of new agencies are activated by default
 			// ==> A type ID is agencyID+typeID
 			activatedTypes: action.agencies
-				.filter(agency => state.items[agency.ID] == undefined)
-				.map(agency => Object.keys(agency.types).map(typeID => agency.ID+typeID))
+				.filter(agency => state.items[agency.id] == undefined)
+				.map(agency => Object.keys(agency.types).map(typeID => agency.id+typeID))
 				.reduce(((allTypes, types) => allTypes.concat(types)), state.activatedTypes),
 			lastUpdated: { date: action.date, position: action.position },
 			fetching: state.fetching - 1,
@@ -74,6 +76,19 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 		return {
 			...state,
 			activatedTypes: toggleItem(state.activatedTypes, action.agencyID+String(action.typeID))
+		}
+	case REHYDRATE:
+		if (action.payload.agencies === undefined) {
+			return state
+		}
+		return {
+			...state,
+			...action.payload.agencies,
+			items: {
+				...mapItems(action.payload.agencies.items, agency => new Agency(agency, agency.serverID)),
+			},
+			activated: action.payload.agencies.activated.concat(state.activated),
+			activatedTypes: action.payload.agencies.activatedTypes.concat(state.activatedTypes),
 		}
 	default:
 		return state

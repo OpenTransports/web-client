@@ -33,7 +33,11 @@ class AsyncApp extends React.Component<RootState, any> {
 	}
 
 	render()  {
-		const { dispatch, agencies, transports, itineraries, userPosition, radius, drawers } = this.props
+		const {
+			dispatch, agencies, transports,
+			itineraries, userPosition, radius,
+			drawers, linesRoutes
+		} = this.props
 
 		// 0 - Map items to Transports array
 		// 1 - Filter: Don't display Transports that are to fare
@@ -100,6 +104,7 @@ class AsyncApp extends React.Component<RootState, any> {
 				<MapDrawer
 					transports         = {visibleTransports}
 					agencies           = {agencies.items}
+					linesRoutes        = {linesRoutes.items}
 					selectedTransport  = {transports.selected}
 					itinerary          = {itineraries.items[itineraries.display]}
 					userPosition       = {userPosition}

@@ -1,4 +1,5 @@
 import { Dispatch } from 'react-redux'
+import { REHYDRATE } from 'redux-persist/constants'
 
 import { Agency, TransportType, Position, Server } from '../models'
 import { RootState } from '../reducers/configureStore'
@@ -35,7 +36,8 @@ export type agenciesActions =
 	requestAgenciesAction |
 	receiveAgenciesAction |
 	toggleAgencyAction    |
-	toggleTypeAction
+	toggleTypeAction      |
+	{ type: 'persist/REHYDRATE', payload: any, error: any }
 
 
 // CREATORS
@@ -87,8 +89,8 @@ export function fetchAgencies() {
 			.map(server => server)
 			.map((server) => new Promise(async () => {
 					dispatch(requestAgencies())
-					const response = await fetch(`${server.URL}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
-					const agencies = (await response.json()).map((rawAgency: any) => new Agency(rawAgency, server.ID))
+					const response = await fetch(`${server.url}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
+					const agencies = (await response.json()).map((rawAgency: any) => new Agency(rawAgency, server.id))
 					dispatch(receiveAgencies(agencies, userPosition, radius))
 				})
 			)

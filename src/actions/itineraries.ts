@@ -40,10 +40,7 @@ function displayItinerary(hash: string): displayItinerary {
 
 
 // FUNCTIONS
-// 1. Dispatch a updateRadius action
-// 2. If the new radius is bigger than the old radius, refetch transports and agencies list
-// @param newRadius <number> the new radius
-// TODO - the demo server of osrm only server driving itineraries. We need to set up out own routing server
+// TODO - the demo server of osrm only server driving itineraries. We need to set up our own routing server
 const API_URL = "https://itineraryr.project-osrm.org/itinerary/v1/foot"
 export function getItinerary(from: Position, to: Position) {
 	return async (dispatch: Dispatch<{}>, getState: () => RootState) => {

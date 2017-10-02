@@ -1,15 +1,17 @@
 import { Store, combineReducers, createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension'
+import { persistStore, autoRehydrate } from 'redux-persist'
 
-import { servers       , ServersState     } from './servers'
-import { transports    , TransportsState  } from './transports'
-import { agencies      , AgenciesState    } from './agencies'
-import { userPosition  , PositionState    } from './position'
-import { drawers       , DrawersState     } from './drawers'
-import { radius        , RadiusState      } from './radius'
-import { itineraries     , ItinerariesState } from './itineraries'
+import { servers     , ServersState     } from '.'
+import { transports  , TransportsState  } from '.'
+import { agencies    , AgenciesState    } from '.'
+import { userPosition, PositionState    } from '.'
+import { drawers     , DrawersState     } from '.'
+import { radius      , RadiusState      } from '.'
+import { itineraries , ItinerariesState } from '.'
+import { linesRoutes , LinesRoutesState } from '.'
 
 
 export interface RootState extends Store<{}> {
@@ -19,12 +21,13 @@ export interface RootState extends Store<{}> {
 	transports  : TransportsState
 	drawers     : DrawersState
 	radius      : RadiusState
-	itineraries   : ItinerariesState
+	itineraries : ItinerariesState
+	linesRoutes : LinesRoutesState
 }
 
 
 export default function configureStore(preloadedState?: any) {
-	return createStore(
+	const store = createStore(
 		combineReducers({
 			servers,
 			agencies,
@@ -33,13 +36,21 @@ export default function configureStore(preloadedState?: any) {
 			drawers,
 			radius,
 			itineraries,
+			linesRoutes,
 		}),
+
 		preloadedState,
+
 		composeWithDevTools(
+			autoRehydrate(),
 			applyMiddleware(
 				thunkMiddleware,
-				createLogger()
-			)
+				createLogger(),
+			),
 		)
 	)
+
+	persistStore(store, {whitelist: ["agencies", "linesRoutes", "radius"]})
+
+	return store
 }

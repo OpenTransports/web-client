@@ -9,7 +9,7 @@ export class Position {
 		this.map(rawPosition)
 	}
 
-	map(rawPosition: any): void {
+	map(rawPosition: Position): void {
 		this.latitude  = rawPosition.latitude
 		this.longitude = rawPosition.longitude
 		this.heading   = rawPosition.heading

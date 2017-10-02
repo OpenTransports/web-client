@@ -27,7 +27,7 @@ export function TransportsList(props: TransportsListProps) {
 			{transports
 				.sort((t1, t2) => t1.position.distanceFrom(userPosition) - t2.position.distanceFrom(userPosition))
 				.map(transport =>
-					<ListItem key={transport.ID} innerDivStyle={{padding: '16px 10px'}}>
+					<ListItem key={transport.id} innerDivStyle={{padding: '16px 10px'}}>
 						<Paper style={{backgroundColor: 'white'}}>
 							<TransportComp
 								transport={transport}

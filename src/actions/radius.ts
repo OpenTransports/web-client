@@ -1,4 +1,5 @@
 import { Dispatch } from 'react-redux'
+import { REHYDRATE } from 'redux-persist/constants'
 
 import { RootState } from '../reducers/configureStore'
 import { fetchTransports, fetchAgencies } from './'
@@ -12,7 +13,7 @@ export type radiusActions = {
 	type    : 'UPDATE_RADIUS'
 	radius  : number
 	position: Position
-}
+} | { type: 'persist/REHYDRATE', payload: any, error: any }
 
 
 // CREATORS

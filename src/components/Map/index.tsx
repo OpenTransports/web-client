@@ -4,7 +4,10 @@ import { Map, TileLayer } from 'react-leaflet'
 import AntPath from 'react-leaflet-ant-path'
 import 'leaflet/dist/leaflet.css'
 
-import { Position, Transport, TransportsCluster, Itinerary } from '../../models'
+import {
+	Position, Transport, TransportsCluster,
+	Itinerary, LineRoute, Normalized
+} from '../../models'
 import TransportsClusterMarker from './TransportsClusterMarker'
 import UserPositionMarker from './UserPositionMarker'
 
@@ -13,6 +16,7 @@ import './style.css'
 
 interface TransportsMapProps {
 	clusters          : TransportsCluster[]
+	linesRoutes       : Normalized<LineRoute>
 	userPosition      : Position
 	itinerary         : Itinerary
 	selectedTransport : Transport
@@ -49,7 +53,10 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 	// }
 
 	render(){
-		const { userPosition, clusters, selectedTransport, onDirectionRequest, itinerary } = this.props
+		const {
+			clusters, linesRoutes,
+			userPosition, itinerary,
+			selectedTransport, onDirectionRequest } = this.props
 
 		return (
 			<Map
@@ -68,16 +75,35 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 
 				{clusters.map(cluster =>
 					<TransportsClusterMarker
-						key={cluster.transports[0].ID}
+						key={cluster.transports[0].id}
 						cluster={cluster}
 						userPosition={userPosition}
 						onDirectionRequest={onDirectionRequest}
 					/>
 				)}
 
+
+				{clusters
+					.reduce(((allTransports, cluster) => {
+						return allTransports.concat(cluster.transports)
+					}), [])
+					.map(transport =>
+						<AntPath
+							key={transport.line}
+							positions={linesRoutes[transport.line].points.map(point => {
+								return {
+									lat: point.latitude,
+									lng: point.longitude,
+								}
+							})}
+						/>
+					)
+				}
+
+
 				{selectedTransport && itinerary &&
 					<AntPath
-						positions={itinerary.points.map((position) => {
+						positions={itinerary.points.map(position => {
 							return {
 								lat: position.latitude,
 								lng: position.longitude,

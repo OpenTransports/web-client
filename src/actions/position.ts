@@ -48,8 +48,9 @@ export function watchPosition() {
 			// Can be change by creating an .env file (see .env.example)
 			const newPosition = new Position(MOCK_POSITION || location.coords)
 
-			if (newPosition.isEqual(prevState.userPosition))
+			if (newPosition.isEqual(prevState.userPosition)) {
 				return
+			}
 
 			dispatch(updatePosition(newPosition, prevState.radius))
 

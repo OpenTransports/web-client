@@ -2,7 +2,7 @@ import { Dispatch } from 'react-redux'
 
 import { Transport, TransportType, Position } from '../models'
 import { RootState } from '../reducers/configureStore'
-import { toggleMap, getItinerary } from '.'
+import { toggleMap, getItinerary, getLineRouteForTransport } from '.'
 
 // TYPES
 export const REQUEST_TRANSPORTS    = "REQUEST_TRANSPORTS"
@@ -78,9 +78,10 @@ export function fetchTransports() {
 			.filter(server => server.radius === -1 || server.center.distanceFrom(userPosition) <= server.radius)
 			.map(server => new Promise(async () => {
 				dispatch(requestTransports())
-				const response = await fetch(`${server.URL}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
+				const response = await fetch(`${server.url}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
 				const transports = (await response.json()).map((rawTransport: any) => new Transport(rawTransport))
 				dispatch(receiveTransports(transports, userPosition, radius))
+				transports.forEach((transport) => dispatch(getLineRouteForTransport(transport)))
 			}))
 	}
 }

@@ -1,7 +1,7 @@
 import { Position, Agency } from '.'
 
 export class Transport {
-	ID          : string
+	id          : string
 	agencyID    : string
 	name        : string
 	type        : TransportType
@@ -10,8 +10,8 @@ export class Transport {
 	line        : string
 	informations: Information[]
 
-	constructor(rawTransport: any) {
-		this.ID           = rawTransport.id
+	constructor(rawTransport: Transport) {
+		this.id           = rawTransport.id
 		this.agencyID     = rawTransport.agencyID
 		this.name         = rawTransport.name
 		this.type         = rawTransport.type

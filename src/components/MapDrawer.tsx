@@ -2,13 +2,18 @@ import * as React from 'react'
 import { connect, Dispatch } from 'react-redux'
 import Drawer from 'material-ui/Drawer'
 
-import { Position, Transport, Agency, Server, TransportsCluster, Itinerary, Normalized } from '../models'
+import {
+	Position, Transport,
+	Agency, Server,
+	TransportsCluster, Itinerary,
+	LineRoute, Normalized } from '../models'
 import TransportsMap from './Map'
 
 
 interface MapDrawerProps {
 	transports        : Transport[]
 	agencies          : Normalized<Agency>
+	linesRoutes       : Normalized<LineRoute>
 	selectedTransport : Transport
 	itinerary         : Itinerary
 	userPosition      : Position
@@ -22,7 +27,7 @@ export function MapDrawer(props: MapDrawerProps) {
 	const {
 		agencies,
 		transports, selectedTransport,
-		itinerary,
+		itinerary, linesRoutes,
 		onDirectionRequest, userPosition,
 		mapIsOpen, toggleOpen
 	} = props
@@ -55,6 +60,7 @@ export function MapDrawer(props: MapDrawerProps) {
 		>
 			{mapIsOpen && <TransportsMap
 				clusters={clustersOfTransports}
+				linesRoutes={linesRoutes}
 				userPosition={userPosition}
 				itinerary={itinerary}
 				selectedTransport={selectedTransport}

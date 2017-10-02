@@ -32,7 +32,9 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.1",
     "redux-devtools-extension": "^2.13.2",
+    "redux-localstorage": "^0.4.1",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^4.10.1",
     "redux-thunk": "^2.2.0",
     "serve-static": "^1.12.4",
     "typeface-roboto": "^0.0.35"

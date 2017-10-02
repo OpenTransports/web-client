@@ -41,6 +41,8 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 			radius, onRadiusChange,
 			isOpen, lock, toggleOpen } = this.props
 
+		console.log(Object.keys(agencies.items))
+
 		return (
 			<Drawer
 				containerStyle={{display: 'flex', flexDirection: 'column'}}
@@ -52,38 +54,39 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 				<List style={{flexGrow: 1}}>
 					{Object.keys(agencies.items).map(agencyID =>
 						// Only display agencies that have some transports visible
-						{//visibleTransports.filter(transport => transport.agencyID === agencyID).length > 0 &&
-						<ListItem
-							key={agencyID}
-							primaryText={agencies.items[agencyID].name}
-							// If only one type, don't show nested item
-							// Else show a toggle for each types
-							nestedItems={Object.keys(agencies.items[agencyID].types).length > 1 ?
-								Object.keys(agencies.items[agencyID].types).map(typeID =>
-									<ListItem
-										key={typeID}
-										style={{height: 40}}>
-										<Toggle
-											label={agencies.items[agencyID].types[typeID].name || TransportTypeDefaultName[typeID]}
-											defaultToggled={agencies.activatedTypes.indexOf(agencyID+typeID) != -1}
-											onToggle={() => onTypeToggle(agencyID, typeID)}
-											thumbSwitchedStyle={{backgroundColor: greenA700}}
-											trackSwitchedStyle={{backgroundColor: green100}}
-											disabled={agencies.activated.indexOf(agencyID) == -1}
-										/>
-									</ListItem>
-								) : undefined
-							}
-							rightToggle={Object.keys(agencies.items[agencyID].types).length == 1 ?
-								<Toggle
-									defaultToggled={agencies.activated.indexOf(agencyID) != -1}
-									onToggle={() => onAgencyToggle(agencyID)}
-									thumbSwitchedStyle={{backgroundColor: greenA700}}
-									trackSwitchedStyle={{backgroundColor: green100}}
-								/> : undefined
-							}
-						>
-						</ListItem>}
+						// {visibleTransports.filter(transport => transport.agencyID === agencyID).length > 0 &&
+							<ListItem
+								key={agencyID}
+								primaryText={agencies.items[agencyID].name}
+								// If only one type, don't show nested item
+								// Else show a toggle for each types
+								nestedItems={Object.keys(agencies.items[agencyID].types).length > 1 ?
+									Object.keys(agencies.items[agencyID].types).map(typeID =>
+										<ListItem
+											key={typeID}
+											style={{height: 40}}>
+											<Toggle
+												label={agencies.items[agencyID].types[typeID].name || TransportTypeDefaultName[typeID]}
+												defaultToggled={agencies.activatedTypes.indexOf(agencyID+typeID) != -1}
+												onToggle={() => onTypeToggle(agencyID, typeID)}
+												thumbSwitchedStyle={{backgroundColor: greenA700}}
+												trackSwitchedStyle={{backgroundColor: green100}}
+												disabled={agencies.activated.indexOf(agencyID) == -1}
+											/>
+										</ListItem>
+									) : undefined
+								}
+								rightToggle={Object.keys(agencies.items[agencyID].types).length == 1 ?
+									<Toggle
+										defaultToggled={agencies.activated.indexOf(agencyID) != -1}
+										onToggle={() => onAgencyToggle(agencyID)}
+										thumbSwitchedStyle={{backgroundColor: greenA700}}
+										trackSwitchedStyle={{backgroundColor: green100}}
+									/> : undefined
+								}
+							>
+							</ListItem>
+						// }
 					)}
 				</List>
 				<div className={'radius-slider-container'}>

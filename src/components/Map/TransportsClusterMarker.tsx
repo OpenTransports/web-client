@@ -47,7 +47,7 @@ export default class TransportsClusterMarker extends MapComponent<TransportsClus
 						<div>
 							{cluster.transports.map(transport =>
 								<TransportComp
-									key={transport.ID}
+									key={transport.id}
 									transport={transport}
 									agency={cluster.agency}
 									userPosition={userPosition}

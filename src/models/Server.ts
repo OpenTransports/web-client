@@ -1,14 +1,14 @@
 import { Position } from '.'
 
 export class Server {
-	ID    : string
-	URL   : string
+	id    : string
+	url   : string
 	center: Position
 	radius: number
 
 	constructor(rawServer) {
-		this.ID     = rawServer.ID
-		this.URL    = rawServer.URL
+		this.id     = rawServer.id
+		this.url    = rawServer.url
 		this.center = new Position(rawServer.center)
 		this.radius = rawServer.radius
 	}

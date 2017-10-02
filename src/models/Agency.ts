@@ -7,19 +7,19 @@ class TypeInfo {
 
 
 export class Agency {
-	ID      : string
+	id      : string
 	serverID: string
-	URL     : string
+	url     : string
 	git     : string
 	name    : string
 	center  : Position
 	radius  : number
 	types   : { [name: string]: TypeInfo}
 
-	constructor(rawAgency: any, serverID: string) {
-		this.ID       = rawAgency.id
+	constructor(rawAgency: Agency, serverID: string) {
+		this.id       = rawAgency.id
 		this.serverID = serverID
-		this.URL      = rawAgency.url
+		this.url      = rawAgency.url
 		this.git      = rawAgency.git
 		this.name     = rawAgency.name
 		this.center   = new Position(rawAgency.center)

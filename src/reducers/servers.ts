@@ -19,7 +19,7 @@ const defaultState: ServersState = {
 
 if (MOCK_SERVERS != null) {
 	const testServer = new Server(MOCK_SERVERS)
-	defaultState.items = { [testServer.ID]: testServer }
+	defaultState.items = { [testServer.id]: testServer }
 }
 
 

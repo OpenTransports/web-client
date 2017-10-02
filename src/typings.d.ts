@@ -5,10 +5,10 @@ declare module "*.json" {
 
 
 declare var MOCK_SERVERS: {
-	ID: number,
+	id : string,
 	url: string,
-	position: {
-		latitude: number,
+	center: {
+		latitude : number,
 		longitude: number
 	},
 	radius: number
@@ -16,6 +16,6 @@ declare var MOCK_SERVERS: {
 
 
 declare var MOCK_POSITION: {
-	latitude: number,
+	latitude : number,
 	longitude: number
 }

@@ -1,3 +1,5 @@
+import { REHYDRATE } from 'redux-persist/constants'
+
 import {
 	UPDATE_RADIUS,
 	radiusActions
@@ -17,6 +19,11 @@ export function radius(state = defaultState, action: radiusActions): RadiusState
 	switch (action.type) {
 	case UPDATE_RADIUS:
 		return action.radius
+	case REHYDRATE:
+		if (action.payload.agencies === undefined) {
+			return state
+		}
+		return action.payload.radius
 	default:
 		return state
 	}
