@@ -5,7 +5,7 @@
 ---
 Progressive web application that fetch the nearest public transports all around the world (or at least could) using the OpenTransports protocol.
 
-[Demo](https://open-transports.herokuapp.com/)
+[Demo](https://opentransports.github.io)
 
 
 # Dependencies
