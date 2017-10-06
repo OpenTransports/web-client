@@ -45,6 +45,7 @@ export function linesRoutes(state = defaultState, action: lineRoutesActions): Li
 		if (action.payload.linesRoutes === undefined) {
 			return state
 		}
+		action.payload.linesRoutes.fetching = undefined // Remove fetching because it can cause trouble
 		return {
 			...state,
 			...action.payload.linesRoutes,

@@ -1,7 +1,7 @@
 {
   "name": "OpenTransport",
   "description": "An FLOSS system to get public transports near you",
-  "version": "1.0.0",
+  "version": "1.1",
   "author": "Louis Chemineau",
   "main": "server.js",
   "license": "GPL-3.0",
