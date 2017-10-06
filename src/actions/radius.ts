@@ -28,10 +28,12 @@ function updateRadius(radius: number): radiusActions {
 // @param newRadius <number> the new radius
 export function changeRadius(newRadius: number) {
 	return (dispatch: Dispatch<{}>, getState: () => RootState) => {
+		const { radius } = getState() // Get radius now to avoid getting the new radius
+
 		dispatch(updateRadius(newRadius))
 		dispatch(redrawTransports())
 
-		if (newRadius > getState().radius) {
+		if (newRadius > radius) {
 			dispatch(fetchTransports())
 		}
 	}
