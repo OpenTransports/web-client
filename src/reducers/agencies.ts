@@ -81,6 +81,7 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 		if (action.payload.agencies === undefined) {
 			return state
 		}
+		action.payload.agencies.fetching = undefined // Remove fetching because it can cause trouble
 		return {
 			...state,
 			...action.payload.agencies,
