@@ -17,3 +17,30 @@ git clone https://github.com/OpenTransports/web-client  # Clone the repo
 yarn                           # Install dependencies
 yarn dev                       # Start the dev server on port 9000
 ```
+
+You can setup some environment variables. To do this, copy the `.env.example` to `.env`.
+`MOCK_SERVERS`: will replace the servers located in `src/reducers/serversList.json` with the given server. Usefull when you want to test a specific server or if you are running a server on your machine.
+`MOCK_POSITION`: will mock the user position
+`HTTPS`: will make the dev server to use https instead of http. Usefull when debugging on a mobile phone
+
+
+# Architecture
+The project uses react and redux so it tries to follow the good practices of thos frameworks.
+`src/actions` contains action that can be dispatched
+`src/reducers` contains the reducers that will update the store and the store initialisation
+`src/containers` contains react components that use the store directly
+`src/components` contains react components that receive their parameters from the containers  
+`typings.d.ts` can be use to declare global typescript definitions
+
+
+# Building
+We use webpack to build the project
+
+
+# Testing
+We use jest to test the project.
+
+
+# Release
+Use `ỳarn release v<version number>`
+Like `ỳarn release v1.0`
