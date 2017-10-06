@@ -2,26 +2,22 @@ import { Dispatch } from 'react-redux'
 import { REHYDRATE } from 'redux-persist/constants'
 
 import { RootState } from '../reducers/configureStore'
-import { fetchTransports, fetchAgencies } from './'
-import { Position } from '../models'
-
+import { fetchTransports, redrawTransports } from '.'
 
 // TYPES
 export const UPDATE_RADIUS = 'UPDATE_RADIUS'
 
 export type radiusActions = {
-	type    : 'UPDATE_RADIUS'
-	radius  : number
-	position: Position
+	type: 'UPDATE_RADIUS'
+	radius: number
 } | { type: 'persist/REHYDRATE', payload: any, error: any }
 
 
 // CREATORS
-function updateRadius(radius: number, position: Position): radiusActions {
+function updateRadius(radius: number): radiusActions {
 	return {
 		type: UPDATE_RADIUS,
 		radius,
-		position,
 	}
 }
 
@@ -32,13 +28,13 @@ function updateRadius(radius: number, position: Position): radiusActions {
 // @param newRadius <number> the new radius
 export function changeRadius(newRadius: number) {
 	return (dispatch: Dispatch<{}>, getState: () => RootState) => {
-		const { radius , userPosition } = getState()
+		const { radius , userPosition, agencies } = getState()
 
-		dispatch(updateRadius(newRadius, userPosition))
+		dispatch(updateRadius(newRadius))
+		dispatch(redrawTransports(agencies, userPosition, newRadius))
 
 		if (newRadius > radius) {
 			dispatch(fetchTransports())
-			dispatch(fetchAgencies())
 		}
 	}
 }

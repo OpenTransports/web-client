@@ -1,9 +1,9 @@
 import { Dispatch } from 'react-redux'
 import { REHYDRATE } from 'redux-persist/constants'
 
-import { Agency, TransportType, Position, Server } from '../models'
+import { Agency, Position } from '../models'
 import { RootState } from '../reducers/configureStore'
-
+import { redrawTransports } from '.'
 
 // TYPES
 export const REQUEST_AGENCIES = "REQUEST_AGENCIES"
@@ -12,24 +12,23 @@ export const TOGGLE_AGENCY    = "TOGGLE_AGENCY"
 export const TOGGLE_TYPE      = "TOGGLE_TYPE"
 
 export type requestAgenciesAction = {
-	type: 'REQUEST_AGENCIES',
+	type: 'REQUEST_AGENCIES'
 }
 export type receiveAgenciesAction = {
-	type    : 'RECEIVE_AGENCIES',
-	agencies: Array<Agency>,
-	date    : number,
-	radius  : number,
-	position: Position,
+	type: 'RECEIVE_AGENCIES'
+	agencies: Agency[]
+	date: Date
+	userPosition: Position
 }
 export type toggleAgencyAction = {
-	type    : 'TOGGLE_AGENCY',
-	agencyID: string,
+	type: 'TOGGLE_AGENCY'
+	agencyID: string
 }
 
 type toggleTypeAction = {
-	type    : 'TOGGLE_TYPE'
+	type: 'TOGGLE_TYPE'
 	agencyID: string
-	typeID  : string
+	typeID: string
 }
 
 export type agenciesActions =
@@ -47,30 +46,15 @@ function requestAgencies(): requestAgenciesAction {
 	}
 }
 
-function receiveAgencies(agencies: Array<Agency>, position: Position, radius: number): receiveAgenciesAction {
+function receiveAgencies(agencies: Agency[], userPosition: Position): receiveAgenciesAction {
 	return {
 		type: RECEIVE_AGENCIES,
-		date: Date.now(),
+		date: new Date(),
 		agencies,
-		position,
-		radius,
+		userPosition,
 	}
 }
 
-export function toggleAgency(agencyID: string): toggleAgencyAction {
-	return {
-		type: TOGGLE_AGENCY,
-		agencyID,
-	}
-}
-
-export function toggleType(agencyID: string, typeID: string): toggleTypeAction {
-	return {
-		type: TOGGLE_TYPE,
-		agencyID,
-		typeID,
-	}
-}
 
 // FUNCTIONS
 // 1. Dispatch requestAgencies action
@@ -79,8 +63,7 @@ export function toggleType(agencyID: string, typeID: string): toggleTypeAction {
 // @param position <Position> the position around which the fetch the agencies
 export function fetchAgencies() {
 	return async (dispatch: Dispatch<{}>, getState: () => RootState) => {
-		const prevState = getState()
-		const { userPosition, radius, servers } = prevState
+		const { userPosition, radius, servers } = getState()
 
 		// For each server covering the user position, fetch the agencies
 		Object.keys(servers.items)
@@ -89,10 +72,36 @@ export function fetchAgencies() {
 			.map(server => server)
 			.map((server) => new Promise(async () => {
 					dispatch(requestAgencies())
-					const response = await fetch(`${server.url}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${prevState.radius}`)
+					const response = await fetch(`${server.url}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${radius}`)
 					const agencies = (await response.json()).map((rawAgency: any) => new Agency(rawAgency, server.id))
-					dispatch(receiveAgencies(agencies, userPosition, radius))
+					dispatch(receiveAgencies(agencies, userPosition))
+					dispatch(redrawTransports(getState().agencies, userPosition, radius))
 				})
 			)
+	}
+}
+
+
+
+export function toggleAgency(agencyID: string) {
+	return async (dispatch: Dispatch<{}>, getState: () => RootState) => {
+		dispatch({
+			type: TOGGLE_AGENCY,
+			agencyID,
+		})
+		const { agencies, userPosition, radius } = getState()
+		dispatch(redrawTransports(getState().agencies, userPosition, radius))
+	}
+}
+
+export function toggleType(agencyID: string, typeID: string) {
+	return async (dispatch: Dispatch<{}>, getState: () => RootState) => {
+		dispatch({
+			type: TOGGLE_TYPE,
+			agencyID,
+			typeID,
+		})
+		const { agencies, userPosition, radius } = getState()
+		dispatch(redrawTransports(getState().agencies, userPosition, radius))
 	}
 }

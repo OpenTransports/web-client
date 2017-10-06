@@ -55,7 +55,13 @@ export function getLineRouteForTransport(transport: Transport) {
 		const agency = agencies.items[transport.agencyID]
 		const server = servers.items[agency.serverID]
 
-		const response = (await (await fetch(`${server.url}/transports/${transport.id}/route`)).json()) as any
-		dispatch(receiveLineRoute(new LineRoute(response)))
+		try {
+			const response = (await (await fetch(`${server.url}/transports/${transport.id}/route`)).json()) as any
+			dispatch(receiveLineRoute(new LineRoute(response)))
+		} catch(error) {
+			// The server probably don't support /routes
+			// Dispatch receuveLineRoute to decremente the fetching counter
+			dispatch(receiveLineRoute(undefined))
+		}
 	}
 }

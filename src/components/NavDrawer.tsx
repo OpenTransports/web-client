@@ -41,8 +41,6 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 			radius, onRadiusChange,
 			isOpen, lock, toggleOpen } = this.props
 
-		console.log(Object.keys(agencies.items))
-
 		return (
 			<Drawer
 				containerStyle={{display: 'flex', flexDirection: 'column'}}

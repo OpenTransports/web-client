@@ -25,9 +25,12 @@ const defaultState: LinesRoutesState = {
 export function linesRoutes(state = defaultState, action: lineRoutesActions): LinesRoutesState {
 	switch (action.type) {
 	case RECEIVE_LINE_ROUTE:
+		if (action.lineRoute == undefined) {
+			return state
+		}
 		return {
 			...state,
-			fetching: state.fetching--,
+			fetching: state.fetching - 1,
 			items: {
 				...state.items,
 				[action.lineRoute.id]: action.lineRoute,
@@ -36,13 +39,7 @@ export function linesRoutes(state = defaultState, action: lineRoutesActions): Li
 	case REQUEST_LINE_ROUTE:
 		return {
 			...state,
-			fetching: state.fetching++,
-			items: {
-				...state.items,
-				[action.lineID]: {
-					...state.items[action.lineID],
-				},
-			},
+			fetching: state.fetching + 1,
 		}
 	case REHYDRATE:
 		if (action.payload.linesRoutes === undefined) {

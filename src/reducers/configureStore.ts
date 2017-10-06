@@ -4,14 +4,15 @@ import { createLogger } from 'redux-logger'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore, autoRehydrate } from 'redux-persist'
 
-import { servers     , ServersState     } from '.'
-import { transports  , TransportsState  } from '.'
-import { agencies    , AgenciesState    } from '.'
-import { userPosition, PositionState    } from '.'
-import { drawers     , DrawersState     } from '.'
-import { radius      , RadiusState      } from '.'
-import { itineraries , ItinerariesState } from '.'
-import { linesRoutes , LinesRoutesState } from '.'
+import {
+	servers     , ServersState,
+	transports  , TransportsState,
+	agencies    , AgenciesState,
+	userPosition, PositionState,
+	drawers     , DrawersState,
+	radius      , RadiusState,
+	itineraries , ItinerariesState,
+	linesRoutes , LinesRoutesState } from '.'
 
 
 export interface RootState extends Store<{}> {

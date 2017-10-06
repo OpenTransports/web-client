@@ -1,29 +1,25 @@
 import { Dispatch } from 'react-redux'
 
 import { Position } from '../models'
-import { fetchTransports } from './transports'
-import { fetchAgencies } from './agencies'
+import { fetchTransports, fetchAgencies, redrawTransports } from '.'
 import { RootState } from '../reducers/configureStore'
-
 
 // TYPES
 export const UPDATE_POSITION = "UPDATE_POSITION"
 
 export type UpdatePositionAction = {
-	type    : 'UPDATE_POSITION'
+	type: 'UPDATE_POSITION'
 	position: Position
-	radius  : number
 }
 
 export type positionActions = UpdatePositionAction
 
 
 // CREATORS
-function updatePosition(position: Position, radius: number): positionActions {
+function updatePosition(position: Position): UpdatePositionAction {
 	return {
 		type: UPDATE_POSITION,
 		position,
-		radius,
 	}
 }
 
@@ -42,24 +38,25 @@ export function watchPosition() {
 		// window.alert("OpenTransports needs your position to work")
 		// Watch position
 		navigator.geolocation.watchPosition(location => {
-			const prevState = getState()
+			const { userPosition, agencies, transports, radius } = getState()
 
 			// Mock user position during dev
 			// Can be change by creating an .env file (see .env.example)
 			const newPosition = new Position(MOCK_POSITION || location.coords)
 
-			if (newPosition.isEqual(prevState.userPosition)) {
+			if (newPosition.isEqual(userPosition)) {
 				return
 			}
 
-			dispatch(updatePosition(newPosition, prevState.radius))
+			dispatch(updatePosition(newPosition))
+			dispatch(redrawTransports(agencies, newPosition, radius))
 
-			if (newPosition.distanceFrom(prevState.agencies.lastUpdated.position) > 5000) {
+			if (newPosition.distanceFrom(agencies.lastUpdated.position) > 5000) {
 				dispatch(fetchAgencies())
 			}
 
-			if (newPosition.distanceFrom(prevState.transports.lastUpdated.position) > 50 ||
-				prevState.transports.lastUpdated.date - Date.now() > 2*60*1000) {
+			if (newPosition.distanceFrom(transports.lastUpdated.position) > 50 ||
+				transports.lastUpdated.date.getTime() - Date.now() > 2*60*1000) {
 				dispatch(fetchTransports())
 			}
 		}, (error) => console.error(error))
@@ -67,8 +64,10 @@ export function watchPosition() {
 		// Watch heading
 		window.ondeviceorientation = function({ absolute, alpha }) {
 			if (absolute) {
-				const { userPosition, radius } = getState()
-				dispatch(updatePosition(new Position({ ...userPosition, heading: alpha }), radius))
+				const { userPosition, radius, agencies } = getState()
+				const newPosition = new Position({ ...userPosition, heading: alpha })
+				dispatch(updatePosition(newPosition))
+				dispatch(redrawTransports(agencies, newPosition, radius))
 			}
 		}
 	}

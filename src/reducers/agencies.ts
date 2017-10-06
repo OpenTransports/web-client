@@ -15,7 +15,7 @@ export type AgenciesState = {
 	activated     : string[]
 	activatedTypes: string[]
 	fetching      : number
-	lastUpdated   : { date: number, position: Position }
+	lastUpdated   : { date: Date, position: Position }
 }
 
 
@@ -25,7 +25,7 @@ const defaultState: AgenciesState = {
 	activated     : [] as string[],
 	activatedTypes: [],
 	fetching      : 0,
-	lastUpdated   : { date: 0, position: new Position() },
+	lastUpdated   : { date: null, position: new Position() },
 }
 
 
@@ -64,7 +64,7 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 				.filter(agency => state.items[agency.id] == undefined)
 				.map(agency => Object.keys(agency.types).map(typeID => agency.id+typeID))
 				.reduce(((allTypes, types) => allTypes.concat(types)), state.activatedTypes),
-			lastUpdated: { date: action.date, position: action.position },
+			lastUpdated: { date: action.date, position: action.userPosition },
 			fetching: state.fetching - 1,
 		}
 	case TOGGLE_AGENCY:

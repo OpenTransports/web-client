@@ -9,7 +9,7 @@ export const RECEIVE_ITINERARY = 'RECEIVE_ITINERARY'
 export const DISPLAY_ITINERARY = 'DISPLAY_ITINERARY'
 
 type receiveItinerary = {
-	type : 'RECEIVE_ITINERARY'
+	type: 'RECEIVE_ITINERARY'
 	itinerary: Itinerary
 }
 

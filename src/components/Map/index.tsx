@@ -88,15 +88,17 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 						return allTransports.concat(cluster.transports)
 					}), [])
 					.map(transport =>
-						<AntPath
-							key={transport.line}
-							positions={linesRoutes[transport.line].points.map(point => {
-								return {
-									lat: point.latitude,
-									lng: point.longitude,
-								}
-							})}
-						/>
+						{linesRoutes[transport.line] !== undefined &&
+							<AntPath
+								key={transport.line}
+								positions={linesRoutes[transport.line].points.map(point => {
+									return {
+										lat: point.latitude,
+										lng: point.longitude,
+									}
+								})}
+							/>
+						}
 					)
 				}
 
