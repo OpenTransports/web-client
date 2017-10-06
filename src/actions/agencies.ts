@@ -75,7 +75,7 @@ export function fetchAgencies() {
 					const response = await fetch(`${server.url}/agencies?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${radius}`)
 					const agencies = (await response.json()).map((rawAgency: any) => new Agency(rawAgency, server.id))
 					dispatch(receiveAgencies(agencies, userPosition))
-					dispatch(redrawTransports(getState().agencies, userPosition, radius))
+					dispatch(redrawTransports())
 				})
 			)
 	}
@@ -89,8 +89,7 @@ export function toggleAgency(agencyID: string) {
 			type: TOGGLE_AGENCY,
 			agencyID,
 		})
-		const { agencies, userPosition, radius } = getState()
-		dispatch(redrawTransports(getState().agencies, userPosition, radius))
+		dispatch(redrawTransports())
 	}
 }
 
@@ -101,7 +100,6 @@ export function toggleType(agencyID: string, typeID: string) {
 			agencyID,
 			typeID,
 		})
-		const { agencies, userPosition, radius } = getState()
-		dispatch(redrawTransports(getState().agencies, userPosition, radius))
+		dispatch(redrawTransports())
 	}
 }

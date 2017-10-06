@@ -81,38 +81,35 @@ export function unselectTransport(): unselectTransportAction {
 	}
 }
 
-export function redrawTransports(agencies: AgenciesState, userPosition: Position, radius: number): redrawTransportsAction {
-	return {
-		type: 'REDRAW_TRANSPORTS',
-		meta: {
-			agencies,
-			userPosition,
-			radius,
-		},
-	}
-}
-
 
 // FUNCTIONS
 // 1. Dispatch requestTransports action
 // 2. Fetch transports for all servers covering the passed position
 // 3. Dispatch receivedTransports action
-// @param position <Position> the position around which the fetch the transports
 export function fetchTransports() {
 	return async (dispatch: Dispatch<{}>, getState: () => RootState) => {
-		const prevState = getState()
-		const { userPosition, radius, servers, agencies } = prevState
+		const { userPosition, servers } = getState()
 
-		// For each server covering the user position, fetch the transports
+		// For every servers covering the user position, fetch the transports
 		Object.keys(servers.items)
 			.map(serverID => servers.items[serverID])
 			.filter(server => server.radius === -1 || server.center.distanceFrom(userPosition) <= server.radius)
 			.map(server => new Promise(async () => {
 				dispatch(requestTransports())
+
+				// Fetch the transports and store the result into a Transports array
 				const response = await fetch(`${server.url}/transports?latitude=${userPosition.latitude}&longitude=${userPosition.longitude}&radius=${getState().radius}`)
 				const transports: Transport[] = (await response.json()).map((rawTransport: any) => new Transport(rawTransport))
+
 				dispatch(receiveTransports(transports, userPosition))
-				transports
+
+				// Update visible transports
+				dispatch(redrawTransports())
+
+				// Fetch lines routes for every visible transports
+				const transportsState = getState().transports
+				transportsState.visible
+					.map(transportID => transportsState.items[transportID])
 					.filter(transport => {
 						return transport.type === TransportType.Tram ||
 							   transport.type === TransportType.Metro ||
@@ -120,7 +117,6 @@ export function fetchTransports() {
 							   transport.type === TransportType.Rail
 					})
 					.forEach((transport) => dispatch(getLineRouteForTransport(transport)))
-				dispatch(redrawTransports(agencies, userPosition, radius))
 			}))
 	}
 }
@@ -135,7 +131,23 @@ export function selectTransport(transportID: string) {
 		// dispatch(getItinerary(userPosition, transport.position))
 		dispatch({
 			type: SELECT_TRANSPORT,
-			transport: transport,
+			payload: {
+				transport: transport,
+			}
+		})
+	}
+}
+
+export function redrawTransports() {
+	return async (dispatch: Dispatch<{}>, getState: () => RootState) => {
+		const { agencies, userPosition, radius } = getState()
+		dispatch({
+			type: 'REDRAW_TRANSPORTS',
+			meta: {
+				agencies,
+				userPosition,
+				radius,
+			},
 		})
 	}
 }

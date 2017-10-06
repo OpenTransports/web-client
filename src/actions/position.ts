@@ -38,7 +38,7 @@ export function watchPosition() {
 		// window.alert("OpenTransports needs your position to work")
 		// Watch position
 		navigator.geolocation.watchPosition(location => {
-			const { userPosition, agencies, transports, radius } = getState()
+			const { userPosition, agencies, transports } = getState()
 
 			// Mock user position during dev
 			// Can be change by creating an .env file (see .env.example)
@@ -49,7 +49,7 @@ export function watchPosition() {
 			}
 
 			dispatch(updatePosition(newPosition))
-			dispatch(redrawTransports(agencies, newPosition, radius))
+			dispatch(redrawTransports())
 
 			if (newPosition.distanceFrom(agencies.lastUpdated.position) > 5000) {
 				dispatch(fetchAgencies())
@@ -64,10 +64,9 @@ export function watchPosition() {
 		// Watch heading
 		window.ondeviceorientation = function({ absolute, alpha }) {
 			if (absolute) {
-				const { userPosition, radius, agencies } = getState()
-				const newPosition = new Position({ ...userPosition, heading: alpha })
-				dispatch(updatePosition(newPosition))
-				dispatch(redrawTransports(agencies, newPosition, radius))
+				const { userPosition } = getState()
+				dispatch(updatePosition(new Position({ ...userPosition, heading: alpha })))
+				dispatch(redrawTransports())
 			}
 		}
 	}
