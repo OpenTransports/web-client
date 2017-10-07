@@ -81,15 +81,21 @@ export function agencies(state = defaultState, action: agenciesActions): Agencie
 		if (action.payload.agencies === undefined) {
 			return state
 		}
-		action.payload.agencies.fetching = undefined // Remove fetching because it can cause trouble
+		delete action.payload.agencies.fetching // Remove fetching because it can cause trouble
 		return {
 			...state,
 			...action.payload.agencies,
 			items: {
 				...mapItems(action.payload.agencies.items, agency => new Agency(agency, agency.serverID)),
 			},
-			activated: action.payload.agencies.activated.concat(state.activated),
-			activatedTypes: action.payload.agencies.activatedTypes.concat(state.activatedTypes),
+			// Concat all items of saved state that are not in current state with current state
+			activated: action.payload.agencies.activated
+				.filter(item => state.activated.indexOf(item) == -1)
+				.concat(state.activated),
+			// Same than above
+			activatedTypes: action.payload.agencies.activatedTypes
+				.filter(item => state.activatedTypes.indexOf(item) == -1)
+				.concat(state.activatedTypes),
 		}
 	default:
 		return state

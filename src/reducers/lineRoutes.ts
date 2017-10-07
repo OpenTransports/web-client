@@ -26,7 +26,10 @@ export function linesRoutes(state = defaultState, action: lineRoutesActions): Li
 	switch (action.type) {
 	case RECEIVE_LINE_ROUTE:
 		if (action.lineRoute == undefined) {
-			return state
+			return {
+				...state,
+				fetching: state.fetching - 1, 
+			}
 		}
 		return {
 			...state,
@@ -45,7 +48,7 @@ export function linesRoutes(state = defaultState, action: lineRoutesActions): Li
 		if (action.payload.linesRoutes === undefined) {
 			return state
 		}
-		action.payload.linesRoutes.fetching = undefined // Remove fetching because it can cause trouble
+		delete action.payload.linesRoutes.fetching // Remove fetching because it can cause trouble
 		return {
 			...state,
 			...action.payload.linesRoutes,

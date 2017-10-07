@@ -31,7 +31,6 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 
 	constructor(props: NavDrawerProps) {
 		super(props)
-		this.state = { radius: this.props.radius }
 	}
 
 	render() {
@@ -40,6 +39,8 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 			onAgencyToggle, onTypeToggle,
 			radius, onRadiusChange,
 			isOpen, lock, toggleOpen } = this.props
+
+		var mutableRadius = radius
 
 		return (
 			<Drawer
@@ -88,13 +89,13 @@ export class NavDrawer extends React.Component<NavDrawerProps, any> {
 					)}
 				</List>
 				<div className={'radius-slider-container'}>
-					Radius: <b>{this.state.radius} m</b>
+					Radius: <b>{mutableRadius} m</b>
 					<Slider
 						min={20}
 						max={2000}
 						step={10}
 						value={radius}
-						onChange={(event, newRadius: number) => this.setState({ radius: newRadius })}
+						onChange={(event, newRadius: number) => mutableRadius = newRadius}
 						onDragStop={() => onRadiusChange(this.state.radius)}
 					/>
 				</div>
