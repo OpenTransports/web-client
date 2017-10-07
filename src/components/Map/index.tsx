@@ -71,8 +71,11 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 					attribution='Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 				/>
 
+
+				{/* Display user position */}
 				<UserPositionMarker position={userPosition}/>
 
+				{/* Display transports cluster */}
 				{clusters.map(cluster =>
 					<TransportsClusterMarker
 						key={cluster.transports[0].id}
@@ -82,27 +85,28 @@ export default class TransportsMap extends React.Component<TransportsMapProps, {
 					/>
 				)}
 
-
+				{/* Display lines routes for all displayed transports */}
 				{clusters
 					.reduce(((allTransports, cluster) => {
 						return allTransports.concat(cluster.transports)
 					}), [])
-					.map(transport =>
-						{linesRoutes[transport.line] !== undefined &&
-							<AntPath
-								key={transport.line}
-								positions={linesRoutes[transport.line].points.map(point => {
-									return {
-										lat: point.latitude,
-										lng: point.longitude,
-									}
-								})}
-							/>
-						}
+					.map(transport => linesRoutes[transport.line])
+					.filter(lineRoute => lineRoute !== undefined)
+					.filter((lineRoute, index, all) => all.slice(index+1).indexOf(lineRoute) === -1) // Remove duplicates
+					.map(lineRoute =>
+						<AntPath
+							key={lineRoute.id}
+							positions={lineRoute.points.map(point => {
+								return {
+									lat: point.latitude,
+									lng: point.longitude,
+								}
+							})}
+						/>
 					)
 				}
 
-
+				{/* Display an itinerary between the user and the selected transport */}
 				{selectedTransport && itinerary &&
 					<AntPath
 						positions={itinerary.points.map(position => {

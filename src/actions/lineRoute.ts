@@ -62,6 +62,7 @@ export function getLineRouteForTransport(transport: Transport) {
 			// The server probably don't support /routes
 			// Dispatch receuveLineRoute to decremente the fetching counter
 			dispatch(receiveLineRoute(undefined))
+			console.error(error)
 		}
 	}
 }
